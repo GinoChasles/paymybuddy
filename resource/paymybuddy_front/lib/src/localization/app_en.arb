@@ -1,0 +1,6 @@
+{
+  "appTitle": "paymybuddy_front",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
