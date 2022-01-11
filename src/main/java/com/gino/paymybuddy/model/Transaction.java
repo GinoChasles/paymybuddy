@@ -48,4 +48,76 @@ public class Transaction {
       joinColumns = @JoinColumn(name = "idTransaction"),
       inverseJoinColumns = @JoinColumn(name = "idUser"))
   private List<User> users;
+
+  public Transaction() {
+  }
+
+  public Transaction(final String descriptionParam, final double amountParam) {
+    description = descriptionParam;
+    amount = amountParam;
+  }
+
+  public Transaction(final String descriptionParam, final double amountParam,
+                     final User emitterParam, final User receiverParam) {
+    description = descriptionParam;
+    amount = amountParam;
+    emitter = emitterParam;
+    receiver = receiverParam;
+  }
+
+  public int getIdTransaction() {
+    return idTransaction;
+  }
+
+  public void setIdTransaction(final int idTransactionParam) {
+    idTransaction = idTransactionParam;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(final String descriptionParam) {
+    description = descriptionParam;
+  }
+
+  public double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(final double amountParam) {
+    amount = amountParam;
+  }
+
+  public User getEmitter() {
+    return emitter;
+  }
+
+  public void setEmitter(final User emitterParam) {
+    emitter = emitterParam;
+  }
+
+  public User getReceiver() {
+    return receiver;
+  }
+
+  public void setReceiver(final User receiverParam) {
+    receiver = receiverParam;
+  }
+
+  public Commission getCommission() {
+    return commission;
+  }
+
+  public void setCommission(final Commission commissionParam) {
+    commission = commissionParam;
+  }
+
+  public List<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(final List<User> usersParam) {
+    users = usersParam;
+  }
 }
