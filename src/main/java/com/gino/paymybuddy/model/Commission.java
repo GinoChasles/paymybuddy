@@ -29,7 +29,7 @@ public class Commission {
   private Enterprise enterprise;
 
   @ManyToOne
-  @JoinColumn(name = "user")
+  @JoinColumn(name = "idUser")
   private User user;
 
 }
