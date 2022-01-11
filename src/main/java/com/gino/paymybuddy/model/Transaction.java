@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -25,7 +26,8 @@ public class Transaction {
   @Size(max = 255)
   private String description;
 
-  @Column(name = "amount")
+  @Column(name = "amount", columnDefinition = "Decimal(10,2)")
+  @PositiveOrZero
   private double amount;
 
   @ManyToOne

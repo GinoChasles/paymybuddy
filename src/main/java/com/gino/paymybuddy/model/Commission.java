@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Commission {
@@ -18,6 +19,7 @@ public class Commission {
   private int idCommission;
 
   @Column(name = "pourcentage")
+  @PositiveOrZero
   private double pourcentage;
 
   @OneToOne

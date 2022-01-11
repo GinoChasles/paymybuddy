@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class BankAccount {
@@ -26,20 +27,27 @@ public class BankAccount {
   @Column(name = "key")
   private int key;
 
+  @Column(name = "amount", columnDefinition = "Decimal(10,2)")
+  @PositiveOrZero
+  private double amount;
+
+
   @OneToOne(mappedBy = "bankAccount")
   private User user;
 
   @OneToOne(mappedBy = "bankAccount")
   private Enterprise enterprise;
 
+
   public BankAccount(final int idBankAccountParam, final int ibanParam, final String bicParam,
                      final int accountNumberParam,
-                     final int keyParam) {
+                     final int keyParam, final double amountParam) {
     idBankAccount = idBankAccountParam;
     iban = ibanParam;
     bic = bicParam;
     accountNumber = accountNumberParam;
     key = keyParam;
+    amount = amountParam;
   }
 
   public BankAccount() {
@@ -85,6 +93,15 @@ public class BankAccount {
   public void setKey(final int keyParam) {
     key = keyParam;
   }
+
+  public double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(final double amountParam) {
+    amount = amountParam;
+  }
+
 
   public User getUser() {
     return user;

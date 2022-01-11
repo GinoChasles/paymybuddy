@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table()
@@ -35,7 +36,8 @@ public class User {
   @NotEmpty(message = "Please enter the mail")
   private String email;
 
-  @Column(name = "accountBalance")
+  @Column(name = "accountBalance", columnDefinition = "Decimal(10,2)")
+  @PositiveOrZero
   private double accountBalance;
 
   @OneToOne

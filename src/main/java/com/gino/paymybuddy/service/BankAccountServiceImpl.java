@@ -40,6 +40,7 @@ public class BankAccountServiceImpl implements BankAccountService {
       bankAccountToUpdate.setBic(bankAccountParam.getBic());
       bankAccountToUpdate.setIban(bankAccountParam.getIban());
       bankAccountToUpdate.setKey(bankAccountParam.getKey());
+      bankAccountToUpdate.setAmount(bankAccountParam.getAmount());
 
       return bankAccountRepository.save(bankAccountToUpdate);
     } else {
