@@ -1,5 +1,6 @@
 package com.gino.paymybuddy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +37,7 @@ public class User {
   @NotEmpty(message = "Please enter the mail")
   private String email;
 
-  @Column(name = "accountBalance", columnDefinition = "Decimal(10,2)")
+  @Column(name = "account", columnDefinition = "Decimal(10,2)")
   @PositiveOrZero
   private double accountBalance;
 
@@ -44,11 +45,11 @@ public class User {
   @JoinColumn(name = "idBankAccount", nullable = false)
   private BankAccount bankAccount;
 
-  @OneToMany(mappedBy = "emitter")
-  List<Transaction> transactionsEmit;
+  @OneToOne(mappedBy = "emitter")
+  Transaction transactionsEmit;
 
-  @OneToMany(mappedBy = "receiver")
-  List<Transaction> transactionsReceiver;
+  @OneToOne(mappedBy = "receiver")
+  Transaction transactionsReceiver;
 
   @OneToMany(mappedBy = "user")
   List<Commission> commissions;
@@ -57,13 +58,7 @@ public class User {
   @JoinTable(name="user_has_user",
       joinColumns=@JoinColumn(name="idUser"),
       inverseJoinColumns=@JoinColumn(name="idUserFriend"))
-      private List<User> friends;
-
-  @ManyToMany
-  @JoinTable(name = "user_has_transaction",
-  joinColumns = @JoinColumn(name = "idUser"),
-  inverseJoinColumns = @JoinColumn(name = "idTransaction"))
-  private List<Transaction> transactions;
+      private List<User> friends = new ArrayList<>();
 
 
   public User() {
@@ -125,21 +120,21 @@ public class User {
     bankAccount = bankAccountParam;
   }
 
-  public List<Transaction> getTransactionsEmit() {
+  public Transaction getTransactionsEmit() {
     return transactionsEmit;
   }
 
   public void setTransactionsEmit(
-      final List<Transaction> transactionsEmitParam) {
+      final Transaction transactionsEmitParam) {
     transactionsEmit = transactionsEmitParam;
   }
 
-  public List<Transaction> getTransactionsReceiver() {
+  public Transaction getTransactionsReceiver() {
     return transactionsReceiver;
   }
 
   public void setTransactionsReceiver(
-      final List<Transaction> transactionsReceiverParam) {
+      final Transaction transactionsReceiverParam) {
     transactionsReceiver = transactionsReceiverParam;
   }
 
@@ -159,11 +154,4 @@ public class User {
     friends = friendsParam;
   }
 
-  public List<Transaction> getTransactions() {
-    return transactions;
-  }
-
-  public void setTransactions(final List<Transaction> transactionsParam) {
-    transactions = transactionsParam;
-  }
 }

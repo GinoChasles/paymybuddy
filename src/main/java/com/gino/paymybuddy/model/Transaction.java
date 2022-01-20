@@ -30,24 +30,18 @@ public class Transaction {
   @PositiveOrZero
   private double amount;
 
-  @ManyToOne
-  @JoinColumn(name = "emitter")
+  @OneToOne
+  @JoinColumn(name = "idEmitter")
   @NotEmpty(message = "You must select a friend to transfer money")
   private User emitter;
 
-  @ManyToOne
-  @JoinColumn(name = "receiver")
+  @OneToOne
+  @JoinColumn(name = "idReceiver")
   @NotEmpty(message = "You must select a friend to transfer money")
   private User receiver;
 
   @OneToOne(mappedBy = "transaction")
   private Commission commission;
-
-  @ManyToMany
-  @JoinTable(name = "user_has_transaction",
-      joinColumns = @JoinColumn(name = "idTransaction"),
-      inverseJoinColumns = @JoinColumn(name = "idUser"))
-  private List<User> users;
 
   public Transaction() {
   }
@@ -113,11 +107,4 @@ public class Transaction {
     commission = commissionParam;
   }
 
-  public List<User> getUsers() {
-    return users;
-  }
-
-  public void setUsers(final List<User> usersParam) {
-    users = usersParam;
-  }
 }
