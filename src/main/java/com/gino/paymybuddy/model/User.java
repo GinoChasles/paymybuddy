@@ -40,8 +40,7 @@ public class User {
   @PositiveOrZero
   private double accountBalance;
 
-  @OneToOne
-  @JoinColumn(name = "id_account", nullable = false)
+  @OneToOne(mappedBy = "user")
   private Account account;
 
   @OneToOne(mappedBy = "emitter")

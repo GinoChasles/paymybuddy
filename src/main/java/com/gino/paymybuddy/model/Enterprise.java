@@ -23,8 +23,8 @@ public class Enterprise {
   @Column(name = "siret")
   private String siret;
 
-  @OneToOne
-  @JoinColumn(name = "id_account", referencedColumnName = "id_account", nullable = false)
+  @OneToOne(mappedBy = "enterprise")
+//  @JoinColumn(name = "id_account", referencedColumnName = "id_account", nullable = false)
   private Account account;
 
   @OneToMany(mappedBy = "enterprise")

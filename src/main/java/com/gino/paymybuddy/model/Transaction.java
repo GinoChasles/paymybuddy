@@ -28,12 +28,12 @@ public class Transaction {
 
   @OneToOne
   @JoinColumn(name = "id_emitter")
-  @NotEmpty(message = "You must select a friend to transfer money")
+//  @NotEmpty(message = "You must select a friend to transfer money")
   private User emitter;
 
   @OneToOne
   @JoinColumn(name = "id_receiver")
-  @NotEmpty(message = "You must select a friend to transfer money")
+//  @NotEmpty(message = "You must select a friend to transfer money")
   private User receiver;
 
   @OneToOne(mappedBy = "transaction")
