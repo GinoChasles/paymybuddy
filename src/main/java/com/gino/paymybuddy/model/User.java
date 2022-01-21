@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -18,12 +17,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
 
 @Entity
-@Table()
+@Table(name = "user")
 public class User {
 
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
-  @Column(name = "idUser", nullable = false)
+  @Column(name = "id_user", nullable = false)
   private int idUser;
 
   @Column(name = "username", nullable = false)
@@ -42,8 +41,8 @@ public class User {
   private double accountBalance;
 
   @OneToOne
-  @JoinColumn(name = "idBankAccount", nullable = false)
-  private BankAccount bankAccount;
+  @JoinColumn(name = "id_account", nullable = false)
+  private Account account;
 
   @OneToOne(mappedBy = "emitter")
   Transaction transactionsEmit;
@@ -51,13 +50,13 @@ public class User {
   @OneToOne(mappedBy = "receiver")
   Transaction transactionsReceiver;
 
-  @OneToMany(mappedBy = "user")
-  List<Commission> commissions;
+//  @OneToMany(mappedBy = "user")
+//  List<Commission> commissions;
 
   @ManyToMany
   @JoinTable(name="user_has_user",
-      joinColumns=@JoinColumn(name="idUser"),
-      inverseJoinColumns=@JoinColumn(name="idUserFriend"))
+      joinColumns=@JoinColumn(name="id_user"),
+      inverseJoinColumns=@JoinColumn(name="id_friend"))
       private List<User> friends = new ArrayList<>();
 
 
@@ -112,12 +111,12 @@ public class User {
     accountBalance = accountBalanceParam;
   }
 
-  public BankAccount getBankAccount() {
-    return bankAccount;
+  public Account getBankAccount() {
+    return account;
   }
 
-  public void setBankAccount(final BankAccount bankAccountParam) {
-    bankAccount = bankAccountParam;
+  public void setBankAccount(final Account accountParam) {
+    account = accountParam;
   }
 
   public Transaction getTransactionsEmit() {
@@ -138,13 +137,13 @@ public class User {
     transactionsReceiver = transactionsReceiverParam;
   }
 
-  public List<Commission> getCommissions() {
-    return commissions;
-  }
-
-  public void setCommissions(final List<Commission> commissionsParam) {
-    commissions = commissionsParam;
-  }
+//  public List<Commission> getCommissions() {
+//    return commissions;
+//  }
+//
+//  public void setCommissions(final List<Commission> commissionsParam) {
+//    commissions = commissionsParam;
+//  }
 
   public List<User> getFriends() {
     return friends;

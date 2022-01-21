@@ -11,6 +11,5 @@ public interface UserService {
   User insert(final User userParam);
   User update(final int id, final User userParam);
   void delete(final int id);
-
-  List<User> findAll();
+  List<User> findAllFriendsByIdUser(final int id);
 }

@@ -13,7 +13,8 @@ import javax.persistence.OneToOne;
 @Entity
 public class Enterprise {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name="id_enterprise", nullable = false)
   private int idEnterprise;
 
   @Column(name = "name")
@@ -23,8 +24,8 @@ public class Enterprise {
   private String siret;
 
   @OneToOne
-  @JoinColumn(name = "idBankAccount", referencedColumnName = "idBankAccount", nullable = false)
-  private BankAccount bankAccount;
+  @JoinColumn(name = "id_account", referencedColumnName = "id_account", nullable = false)
+  private Account account;
 
   @OneToMany(mappedBy = "enterprise")
   private List<Commission> commission;
@@ -61,12 +62,12 @@ public class Enterprise {
     siret = siretParam;
   }
 
-  public BankAccount getBankAccount() {
-    return bankAccount;
+  public Account getAccount() {
+    return account;
   }
 
-  public void setBankAccount(final BankAccount bankAccountParam) {
-    bankAccount = bankAccountParam;
+  public void setAccount(final Account accountParam) {
+    account = accountParam;
   }
 
   public List<Commission> getCommission() {

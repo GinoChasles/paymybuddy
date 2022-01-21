@@ -16,6 +16,7 @@ public class Commission {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="id_commission", nullable = false)
   private int idCommission;
 
   @Column(name = "pourcentage")
@@ -23,16 +24,16 @@ public class Commission {
   private double pourcentage;
 
   @OneToOne
-  @JoinColumn(name = "idTransaction", referencedColumnName = "idTransaction")
+  @JoinColumn(name = "id_transaction", referencedColumnName = "id_transaction")
   private Transaction transaction;
 
   @ManyToOne
-  @JoinColumn(name = "idEnterprise")
+  @JoinColumn(name = "id_enterprise")
   private Enterprise enterprise;
 
-  @ManyToOne
-  @JoinColumn(name = "idUser")
-  private User user;
+//  @ManyToOne
+//  @JoinColumn(name = "idUser")
+//  private User user;
 
   public Commission() {
   }
@@ -73,11 +74,11 @@ public class Commission {
     enterprise = enterpriseParam;
   }
 
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(final User userParam) {
-    user = userParam;
-  }
+//  public User getUser() {
+//    return user;
+//  }
+//
+//  public void setUser(final User userParam) {
+//    user = userParam;
+//  }
 }

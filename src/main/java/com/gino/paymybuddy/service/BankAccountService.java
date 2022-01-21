@@ -1,12 +1,12 @@
 package com.gino.paymybuddy.service;
 
-import com.gino.paymybuddy.model.BankAccount;
+import com.gino.paymybuddy.model.Account;
 import java.util.Optional;
 
 public interface BankAccountService {
 
-  Optional<BankAccount> findById(final int id);
-  BankAccount insert(final BankAccount bankAccountParam);
+  Optional<Account> findById(final int id);
+  Account insert(final Account accountParam);
   void delete(final int id);
-  BankAccount update(final int id, final BankAccount bankAccountParam);
+  Account update(final int id, final Account accountParam);
 }

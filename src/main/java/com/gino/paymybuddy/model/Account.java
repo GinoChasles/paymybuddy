@@ -6,14 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.PositiveOrZero;
 
 @Entity
-public class BankAccount {
+@Table(name = "account")
+public class Account {
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
-  @Column(name="idBankAccount", nullable = false)
-  private int idBankAccount;
+  @Column(name="id_account", nullable = false)
+  private int idAccount;
 
   @Column(name = "iban")
   private int iban;
@@ -21,45 +23,40 @@ public class BankAccount {
   @Column(name = "bic")
   private String bic;
 
-  @Column(name = "accountNumber")
-  private int accountNumber;
-
-  @Column(name = "key")
-  private int key;
+  @Column(name = "accountnumber")
+  private int accountnumber;
 
   @Column(name = "amount", columnDefinition = "Decimal(10,2)")
   @PositiveOrZero
   private double amount;
 
 
-  @OneToOne(mappedBy = "bankAccount")
+  @OneToOne(mappedBy = "account")
   private User user;
 
-  @OneToOne(mappedBy = "bankAccount")
+  @OneToOne(mappedBy = "account")
   private Enterprise enterprise;
 
 
-  public BankAccount(final int idBankAccountParam, final int ibanParam, final String bicParam,
-                     final int accountNumberParam,
-                     final int keyParam, final double amountParam) {
-    idBankAccount = idBankAccountParam;
+  public Account(final int idBankaccountParam, final int ibanParam, final String bicParam,
+                 final int accountnumberParam, final double amountParam) {
+    idAccount = idBankaccountParam;
     iban = ibanParam;
     bic = bicParam;
-    accountNumber = accountNumberParam;
-    key = keyParam;
+    accountnumber = accountnumberParam;
     amount = amountParam;
   }
 
-  public BankAccount() {
+  public Account() {
 
   }
 
-  public int getIdBankAccount() {
-    return idBankAccount;
+  public int getIdBankaccount() {
+    return idAccount;
   }
 
-  public void setIdBankAccount(final int idBankAccountParam) {
-    idBankAccount = idBankAccountParam;
+  public void setIdBankaccount(final int idBankAccountParam) {
+    idAccount = idBankAccountParam;
   }
 
   public int getIban() {
@@ -78,20 +75,12 @@ public class BankAccount {
     bic = bicParam;
   }
 
-  public int getAccountNumber() {
-    return accountNumber;
+  public int getAccountnumber() {
+    return accountnumber;
   }
 
-  public void setAccountNumber(final int accountNumberParam) {
-    accountNumber = accountNumberParam;
-  }
-
-  public int getKey() {
-    return key;
-  }
-
-  public void setKey(final int keyParam) {
-    key = keyParam;
+  public void setAccountnumber(final int accountNumberParam) {
+    accountnumber = accountNumberParam;
   }
 
   public double getAmount() {

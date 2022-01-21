@@ -1,15 +1,11 @@
 package com.gino.paymybuddy.model;
 
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
@@ -19,7 +15,7 @@ import javax.validation.constraints.Size;
 public class Transaction {
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
-  @Column(name = "idTransaction", nullable = false)
+  @Column(name = "id_transaction", nullable = false)
   private int idTransaction;
 
   @Column(name = "description")
@@ -31,12 +27,12 @@ public class Transaction {
   private double amount;
 
   @OneToOne
-  @JoinColumn(name = "idEmitter")
+  @JoinColumn(name = "id_emitter")
   @NotEmpty(message = "You must select a friend to transfer money")
   private User emitter;
 
   @OneToOne
-  @JoinColumn(name = "idReceiver")
+  @JoinColumn(name = "id_receiver")
   @NotEmpty(message = "You must select a friend to transfer money")
   private User receiver;
 

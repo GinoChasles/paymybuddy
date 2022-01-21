@@ -1,6 +1,6 @@
 package com.gino.paymybuddy.service;
 
-import com.gino.paymybuddy.model.BankAccount;
+import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.repository.BankAccountRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,13 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 
   @Override
-  public Optional<BankAccount> findById(final int id) {
+  public Optional<Account> findById(final int id) {
     return bankAccountRepository.findById(id);
   }
 
   @Override
-  public BankAccount insert(final BankAccount bankAccountParam) {
-    return bankAccountRepository.save(bankAccountParam);
+  public Account insert(final Account accountParam) {
+    return bankAccountRepository.save(accountParam);
   }
 
   @Override
@@ -32,17 +32,16 @@ public class BankAccountServiceImpl implements BankAccountService {
   }
 
   @Override
-  public BankAccount update(final int id, final BankAccount bankAccountParam) {
-    Optional<BankAccount> optionalBankAccountLocal = this.findById(id);
+  public Account update(final int id, final Account accountParam) {
+    Optional<Account> optionalBankAccountLocal = this.findById(id);
     if (optionalBankAccountLocal.isPresent()) {
-      BankAccount bankAccountToUpdate = optionalBankAccountLocal.get();
-      bankAccountToUpdate.setAccountNumber(bankAccountParam.getAccountNumber());
-      bankAccountToUpdate.setBic(bankAccountParam.getBic());
-      bankAccountToUpdate.setIban(bankAccountParam.getIban());
-      bankAccountToUpdate.setKey(bankAccountParam.getKey());
-      bankAccountToUpdate.setAmount(bankAccountParam.getAmount());
+      Account accountToUpdateLocal = optionalBankAccountLocal.get();
+      accountToUpdateLocal.setAccountnumber(accountParam.getAccountnumber());
+      accountToUpdateLocal.setBic(accountParam.getBic());
+      accountToUpdateLocal.setIban(accountParam.getIban());
+      accountToUpdateLocal.setAmount(accountParam.getAmount());
 
-      return bankAccountRepository.save(bankAccountToUpdate);
+      return bankAccountRepository.save(accountToUpdateLocal);
     } else {
       return null;
     }
