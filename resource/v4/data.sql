@@ -8,4 +8,4 @@ insert into mydb.enterprise
 
 insert into mydb.account
 (`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
-(34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, 0,1);
+(34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, 1,1);

@@ -1,5 +1,6 @@
 package com.gino.paymybuddy.controller;
 
+import com.gino.paymybuddy.dto.TransactionDTO;
 import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.TransactionServiceImpl;
@@ -21,17 +22,17 @@ public class TransactionController {
     transactionService = transactionServiceParam;
   }
 
-//  @GetMapping(value = "/")
-//  public ModelAndView getTransactions(User userParam) {
-//    ModelAndView mav = new ModelAndView("transfer");
-//    mav.addObject("transactions", transactionService.findAllByEmitterId(userParam.getIdUser(), Pageable.ofSize(1)));
-//    return mav;
-//  }
+  @GetMapping(value = "/")
+  public ModelAndView getTransactions(User userParam) {
+    ModelAndView mav = new ModelAndView("transfer");
+    mav.addObject("transactions", transactionService.findAll());
+    return mav;
+  }
   @PostMapping(value = "/saveTransaction")
-  public ResponseEntity<Transaction> saveTransaction(@RequestParam(value = "description") String description,
-                                                     @RequestParam(value = "amount") double amount,
-                                                     @RequestParam(value = "idEmitter") int idEmitter,
-                                                     @RequestParam(value = "idReceiver") int idReceiver) {
+  public ResponseEntity<TransactionDTO> saveTransaction(@RequestParam(value = "description") String description,
+                                                        @RequestParam(value = "amount") double amount,
+                                                        @RequestParam(value = "idEmitter") int idEmitter,
+                                                        @RequestParam(value = "idReceiver") int idReceiver) {
 
     return ResponseEntity.ok(transactionService.createTransaction(idEmitter,idReceiver,description,amount));
   }

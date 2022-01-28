@@ -42,4 +42,9 @@ public class CommissionServiceImpl implements CommissionService{
       return null;
     }
   }
+
+  @Override
+  public double getTotalCommissionForEnterprise(final int idEnterprise) {
+    return commissionRepository.countAllByEnterprise_IdEnterprise(idEnterprise);
+  }
 }

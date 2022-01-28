@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -21,7 +22,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class User {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
   @Column(name = "id_user", nullable = false)
   private int idUser;
 
@@ -43,11 +44,11 @@ public class User {
   @OneToOne(mappedBy = "user")
   private Account account;
 
-  @OneToOne(mappedBy = "emitter")
-  Transaction transactionsEmit;
+  @OneToMany(mappedBy = "emitter")
+  List<Transaction> transactionsEmit;
 
-  @OneToOne(mappedBy = "receiver")
-  Transaction transactionsReceiver;
+  @OneToMany(mappedBy = "receiver")
+  List<Transaction> transactionsReceiver;
 
 //  @OneToMany(mappedBy = "user")
 //  List<Commission> commissions;
@@ -118,25 +119,33 @@ public class User {
     account = accountParam;
   }
 
-  public Transaction getTransactionsEmit() {
+  public Account getAccount() {
+    return account;
+  }
+
+  public void setAccount(final Account accountParam) {
+    account = accountParam;
+  }
+
+  public List<Transaction> getTransactionsEmit() {
     return transactionsEmit;
   }
 
   public void setTransactionsEmit(
-      final Transaction transactionsEmitParam) {
+      final List<Transaction> transactionsEmitParam) {
     transactionsEmit = transactionsEmitParam;
   }
 
-  public Transaction getTransactionsReceiver() {
+  public List<Transaction> getTransactionsReceiver() {
     return transactionsReceiver;
   }
 
   public void setTransactionsReceiver(
-      final Transaction transactionsReceiverParam) {
+      final List<Transaction> transactionsReceiverParam) {
     transactionsReceiver = transactionsReceiverParam;
   }
 
-//  public List<Commission> getCommissions() {
+  //  public List<Commission> getCommissions() {
 //    return commissions;
 //  }
 //

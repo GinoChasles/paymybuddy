@@ -14,7 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Table(name = "account")
 public class Account {
   @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
   @Column(name="id_account", nullable = false)
   private int idAccount;
 
@@ -25,7 +25,7 @@ public class Account {
   private String bic;
 
   @Column(name = "accountnumber")
-  private int accountnumber;
+  private String accountnumber;
 
   @Column(name = "amount", columnDefinition = "Decimal(10,2)")
   @PositiveOrZero
@@ -42,7 +42,7 @@ public class Account {
 
 
   public Account(final int idBankaccountParam, final int ibanParam, final String bicParam,
-                 final int accountnumberParam, final double amountParam) {
+                 final String accountnumberParam, final double amountParam) {
     idAccount = idBankaccountParam;
     iban = ibanParam;
     bic = bicParam;
@@ -78,11 +78,11 @@ public class Account {
     bic = bicParam;
   }
 
-  public int getAccountnumber() {
+  public String getAccountnumber() {
     return accountnumber;
   }
 
-  public void setAccountnumber(final int accountNumberParam) {
+  public void setAccountnumber(final String accountNumberParam) {
     accountnumber = accountNumberParam;
   }
 

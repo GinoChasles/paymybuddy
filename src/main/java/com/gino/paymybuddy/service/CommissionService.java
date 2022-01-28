@@ -8,4 +8,5 @@ public interface CommissionService {
   Commission insert(final Commission commissionParam);
   void delete(final int id);
   Commission update(final int id, final Commission commissionParam);
+  double getTotalCommissionForEnterprise(final int idEnterprise);
 }

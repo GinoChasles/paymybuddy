@@ -15,13 +15,17 @@ import javax.validation.constraints.PositiveOrZero;
 public class Commission {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="id_commission", nullable = false)
   private int idCommission;
 
   @Column(name = "pourcentage")
   @PositiveOrZero
   private double pourcentage;
+
+  @Column(name = "count")
+  @PositiveOrZero
+  private double commisssionCount;
 
   @OneToOne
   @JoinColumn(name = "id_transaction", referencedColumnName = "id_transaction")
@@ -38,8 +42,17 @@ public class Commission {
   public Commission() {
   }
 
-  public Commission(final double pourcentageParam) {
+  public double getCommisssionCount() {
+    return commisssionCount;
+  }
+
+  public void setCommisssionCount(final double countParam) {
+    commisssionCount = countParam;
+  }
+
+  public Commission(final double pourcentageParam, final double countParam) {
     pourcentage = pourcentageParam;
+    commisssionCount = countParam;
   }
 
   public int getIdCommission() {

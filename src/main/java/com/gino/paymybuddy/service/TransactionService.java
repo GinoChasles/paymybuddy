@@ -1,6 +1,8 @@
 package com.gino.paymybuddy.service;
 
+import com.gino.paymybuddy.dto.TransactionDTO;
 import com.gino.paymybuddy.model.Transaction;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,5 +12,6 @@ public interface TransactionService {
   Transaction insert(Transaction transactionParam);
   Page<Transaction> findAllByEmitterId(final int id, Pageable pageableParam);
   Page<Transaction> findAllByReceiverId(final int id, Pageable pageableParam);
-  Transaction createTransaction(final int idEmitter, final int idReceiver, final String description, final double amount);
+  TransactionDTO createTransaction(final int idEmitter, final int idReceiver, final String description, final double amount);
+  List<Transaction> findAll();
 }

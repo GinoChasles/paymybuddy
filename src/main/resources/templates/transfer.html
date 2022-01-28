@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 <tr th:each="transaction: ${transactions}">
-                    <td th:text="${transaction.receiver}" />
+                    <td th:text="${transaction.receiver.username}" />
                     <td th:text="${transaction.description}" />
                     <td th:text="${transaction.amount}" />
                 </tr>
