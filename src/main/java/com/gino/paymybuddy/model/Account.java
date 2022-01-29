@@ -33,11 +33,11 @@ public class Account {
 
 
   @OneToOne
-  @JoinColumn(name = "id_user", nullable = false)
+  @JoinColumn(name = "id_user")
   private User user;
 
   @OneToOne
-  @JoinColumn(name = "id_enterprise", nullable = false)
+  @JoinColumn(name = "id_enterprise")
   private Enterprise enterprise;
 
 

@@ -5,7 +5,6 @@ import com.gino.paymybuddy.model.Commission;
 import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.repository.TransactionRepository;
-import com.gino.paymybuddy.repository.UserRepository;
 import com.gino.paymybuddy.utils.Constante;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +18,17 @@ public class TransactionServiceImpl implements TransactionService{
   private final TransactionRepository transactionRepository;
   private final UserServiceImpl userService;
   private final EnterpriseServiceImpl enterpriseService;
+  private final CommissionServiceImpl commissionService;
 
   public TransactionServiceImpl(
       final TransactionRepository transactionRepositoryParam,
       final UserServiceImpl userServiceParam,
-      final EnterpriseServiceImpl enterpriseServiceParam) {
+      final EnterpriseServiceImpl enterpriseServiceParam,
+      final CommissionServiceImpl commissionServiceParam) {
     transactionRepository = transactionRepositoryParam;
     userService = userServiceParam;
     enterpriseService = enterpriseServiceParam;
+    commissionService = commissionServiceParam;
   }
 
 
@@ -57,6 +59,7 @@ public class TransactionServiceImpl implements TransactionService{
     User emitter = new User();
     Optional<User> optionalReceiver =  userService.findById(idReceiver);
     Optional<User> optionalEmitter = userService.findById(idEmitter);
+    double commission;
 
     if (optionalReceiver.isPresent() && optionalEmitter.isPresent()) {
       receiver = optionalReceiver.get();
@@ -78,9 +81,14 @@ public class TransactionServiceImpl implements TransactionService{
       commissionLocal.setPourcentage(Constante.COMMISSION_POURCENTAGE);
       commissionLocal.setEnterprise(enterpriseService.findById(Constante.ENTERPRISE_ID).get());
       commissionLocal.setTransaction(transactionLocal);
-      commissionLocal.setCommisssionCount(amount * commissionLocal.getPourcentage());
+      commission = amount/100 * commissionLocal.getPourcentage();
+      if (commission < 0.01) {
+        commission = 0.01;
+      }
+      commissionLocal.setCommisssionCount(commission);
+      commissionService.insert(commissionLocal);
 
-      emitter.setAccountBalance(emitter.getAccountBalance() - amount - (amount * commissionLocal.getPourcentage()));
+      emitter.setAccountBalance(emitter.getAccountBalance() - amount - commission);
       receiver.setAccountBalance(receiver.getAccountBalance() + amount);
 
       userService.update(emitter.getIdUser(), emitter);
