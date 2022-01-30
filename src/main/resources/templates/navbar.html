@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:fragment="nav">
+    <ul>
+        <li>
+            <a th:href="@{/home}">Home</a>
+        </li>
+        <li>
+            <a th:href="@{/transfer}">Transfert</a>
+        </li>
+        <li>
+            <a th:href="@{/home}">Profile</a>
+        </li>
+        <li>
+            <a th:href="@{/home}">Contact</a>
+        </li>
+        <li>
+            <form method="post" th:action="@{/logout}" th:hidden="true" name="logoutForm">
+                <button type="submit" value="Logout">Log off</button>
+            </form>
+            <a class="nav-link" id="logoutLink" th:href="@{/login}">Logout</a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

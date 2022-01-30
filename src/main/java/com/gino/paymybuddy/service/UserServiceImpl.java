@@ -38,6 +38,11 @@ public class UserServiceImpl implements UserService{
       userLocal.setUsername(userParam.getUsername());
       userLocal.setEmail(userParam.getEmail());
       userLocal.setAccountBalance(userParam.getAccountBalance());
+      userLocal.setFriends(userParam.getFriends());
+      userLocal.setAccount(userParam.getAccount());
+      userLocal.setAccountBalance(userParam.getAccountBalance());
+      userLocal.setTransactionsEmit(userParam.getTransactionsEmit());
+      userLocal.setTransactionsReceiver(userParam.getTransactionsReceiver());
       return userRepository.save(userLocal);
     } else {
       return null;
@@ -60,5 +65,25 @@ public class UserServiceImpl implements UserService{
 //      return null;
 //    }
     return userRepository.findAllFriendsByIdUser(id);
+  }
+
+  @Override
+  public void addFriend(final String email, final int id) throws Exception {
+    Optional<User> userOptionalLocal = this.findById(id);
+    Optional<User> optionalUserLocal = this.findUserByEmail(email);
+
+    if (optionalUserLocal.isPresent()) {
+      List<User> friendList = userOptionalLocal.get().getFriends();
+      if (!friendList.contains(optionalUserLocal)) {
+        friendList.add(optionalUserLocal.get());
+        userOptionalLocal.get().setFriends(friendList);
+        this.update(id, userOptionalLocal.get());
+      } else {
+       throw new Exception("This person is already in you're friend's list !");
+      }
+
+    } else {
+      throw new Exception("This person doesn't exist !");
+    }
   }
 }

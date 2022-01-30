@@ -6,9 +6,8 @@
 </head>
 <body>
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<div th:insert="~{navbar :: nav}"></div>
 <div th:insert="~{add-connection}"></div>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+
 </body>
 </html>

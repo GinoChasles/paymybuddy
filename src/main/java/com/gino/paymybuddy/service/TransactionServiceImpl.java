@@ -55,8 +55,8 @@ public class TransactionServiceImpl implements TransactionService{
   @Override
   public TransactionDTO createTransaction(final int idEmitter, final int idReceiver,
                                           final String description, final double amount) {
-    User receiver = new User();
-    User emitter = new User();
+    User receiver;
+    User emitter;
     Optional<User> optionalReceiver =  userService.findById(idReceiver);
     Optional<User> optionalEmitter = userService.findById(idEmitter);
     double commission;
@@ -89,6 +89,13 @@ public class TransactionServiceImpl implements TransactionService{
       commissionService.insert(commissionLocal);
 
       emitter.setAccountBalance(emitter.getAccountBalance() - amount - commission);
+      List<Transaction> transactionListEmit = emitter.getTransactionsEmit();
+      transactionListEmit.add(transactionLocal);
+      emitter.setTransactionsEmit(transactionListEmit);
+
+      List<Transaction> transactionListReceive = receiver.getTransactionsReceiver();
+      transactionListReceive.add(transactionLocal);
+      receiver.setTransactionsReceiver(transactionListReceive);
       receiver.setAccountBalance(receiver.getAccountBalance() + amount);
 
       userService.update(emitter.getIdUser(), emitter);

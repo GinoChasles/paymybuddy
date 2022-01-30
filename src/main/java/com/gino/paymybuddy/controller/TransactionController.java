@@ -4,7 +4,6 @@ import com.gino.paymybuddy.dto.TransactionDTO;
 import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.TransactionServiceImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("transaction")
+@RequestMapping("transfer")
 public class TransactionController {
   final private TransactionServiceImpl transactionService;
 
@@ -26,6 +25,9 @@ public class TransactionController {
   public ModelAndView getTransactions(User userParam) {
     ModelAndView mav = new ModelAndView("transfer");
     mav.addObject("transactions", transactionService.findAll());
+    mav.addObject("amount", userParam.getAccount());
+
+    mav.addObject("friendList", userParam.getFriends());
     return mav;
   }
   @PostMapping(value = "/saveTransaction")

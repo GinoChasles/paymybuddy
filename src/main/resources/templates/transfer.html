@@ -5,6 +5,21 @@
     <title>Transfer's Page</title>
 </head>
 <body>
+<div th:insert="~{navbar}"></div>
+
+    <div>
+        <h3>Send Money</h3>
+        <form method="post" th:action="@{/transaction/saveTransaction}">
+            <select name="connection" required>
+                <option value="" disabled selected>Select A Connection</option>
+                <option th:each="friend :${friendList}" th:value="${friend.email}" th:text="${friend.email}"></option>
+            </select>
+            <input type="number" name="amount" step=".01" th:min="0" th:max="${amount}" placeholder="0€" required>
+            <input type="text" name="description" required>
+            <button type="submit">Pay</button>
+        </form>
+    </div>
+
     <div class="container">
         <h3>My Transactions</h3>
         <table>

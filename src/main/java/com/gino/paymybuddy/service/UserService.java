@@ -12,4 +12,5 @@ public interface UserService {
   User update(final int id, final User userParam);
   void delete(final int id);
   List<User> findAllFriendsByIdUser(final int id);
+  void addFriend(final String email, final int id) throws Exception;
 }
