@@ -6,16 +6,21 @@
 </head>
 <body>
 <div th:insert="~{navbar}"></div>
+<div th:insert="~{add-connection}"></div>
 
     <div>
         <h3>Send Money</h3>
+        <span th:utext="${currentPrincipalName}"></span>
         <form method="post" th:action="@{/transaction/saveTransaction}">
-            <select name="connection" required>
+<!--            <label for="connection">Choose a friend</label>-->
+            <select id="connection" name="connection" required>
                 <option value="" disabled selected>Select A Connection</option>
                 <option th:each="friend :${friendList}" th:value="${friend.email}" th:text="${friend.email}"></option>
             </select>
-            <input type="number" name="amount" step=".01" th:min="0" th:max="${amount}" placeholder="0€" required>
-            <input type="text" name="description" required>
+<!--            <label for="amount">Amount want to transfer</label>-->
+            <input id="amount" type="number" name="amount" step=".01" th:min="0" th:max="${amount}" placeholder="0€" required>
+<!--            <label for="description">Description</label>-->
+            <input id="description" type="text" name="description" required>
             <button type="submit">Pay</button>
         </form>
     </div>

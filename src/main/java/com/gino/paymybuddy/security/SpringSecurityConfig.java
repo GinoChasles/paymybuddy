@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -20,17 +21,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .cors().and().csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/home").permitAll()
+        .antMatchers("/login", "/").permitAll()
         .antMatchers("/admin").hasRole("ADMIN")
-        .antMatchers("/user", "/transaction/saveTransaction", "/transaction").hasRole("USER")
+        .antMatchers("/user", "/transaction/saveTransaction", "/transfer", "/home").hasRole("USER")
         .anyRequest().authenticated()
         .and()
         .formLogin()
           .loginPage("/login")
           .permitAll()
+          .loginProcessingUrl("/login")
+          .failureUrl("/login")
+          .defaultSuccessUrl("/home", true)
           .and()
         .logout()
-          .permitAll();
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/login")
+        .clearAuthentication(true)
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID")
+        .permitAll();
   }
 
   @Override

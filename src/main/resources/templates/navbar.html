@@ -20,10 +20,8 @@
             <a th:href="@{/home}">Contact</a>
         </li>
         <li>
-            <form method="post" th:action="@{/logout}" th:hidden="true" name="logoutForm">
-                <button type="submit" value="Logout">Log off</button>
-            </form>
-            <a class="nav-link" id="logoutLink" th:href="@{/login}">Logout</a>
+
+            <a class="nav-link" id="logoutLink" th:href="@{/logout}">Logout</a>
         </li>
     </ul>
 </nav>

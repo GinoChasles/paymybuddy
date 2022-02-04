@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 public class TransactionServiceImpl implements TransactionService{
 
   private final TransactionRepository transactionRepository;
-  private final UserServiceImpl userService;
-  private final EnterpriseServiceImpl enterpriseService;
-  private final CommissionServiceImpl commissionService;
+  private final UserService userService;
+  private final EnterpriseService enterpriseService;
+  private final CommissionService commissionService;
 
   public TransactionServiceImpl(
       final TransactionRepository transactionRepositoryParam,
-      final UserServiceImpl userServiceParam,
-      final EnterpriseServiceImpl enterpriseServiceParam,
-      final CommissionServiceImpl commissionServiceParam) {
+      final UserService userServiceParam,
+      final EnterpriseService enterpriseServiceParam,
+      final CommissionService commissionServiceParam) {
     transactionRepository = transactionRepositoryParam;
     userService = userServiceParam;
     enterpriseService = enterpriseServiceParam;
@@ -89,13 +89,6 @@ public class TransactionServiceImpl implements TransactionService{
       commissionService.insert(commissionLocal);
 
       emitter.setAccountBalance(emitter.getAccountBalance() - amount - commission);
-      List<Transaction> transactionListEmit = emitter.getTransactionsEmit();
-      transactionListEmit.add(transactionLocal);
-      emitter.setTransactionsEmit(transactionListEmit);
-
-      List<Transaction> transactionListReceive = receiver.getTransactionsReceiver();
-      transactionListReceive.add(transactionLocal);
-      receiver.setTransactionsReceiver(transactionListReceive);
       receiver.setAccountBalance(receiver.getAccountBalance() + amount);
 
       userService.update(emitter.getIdUser(), emitter);
