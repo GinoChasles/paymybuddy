@@ -1,18 +1,24 @@
 package com.gino.paymybuddy.service;
 
+import com.gino.paymybuddy.model.Role;
 import com.gino.paymybuddy.model.User;
+import com.gino.paymybuddy.repository.RoleRepository;
 import com.gino.paymybuddy.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
 
-  public UserServiceImpl(final UserRepository userRepositoryParam) {
+  public UserServiceImpl(final UserRepository userRepositoryParam,
+                         final RoleRepository roleRepositoryParam) {
     userRepository = userRepositoryParam;
+    roleRepository = roleRepositoryParam;
   }
 
   @Override
@@ -27,6 +33,16 @@ public class UserServiceImpl implements UserService{
 
   @Override
   public User insert(final User userParam) {
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    String encodedPassword = encoder.encode(userParam.getPassword());
+    userParam.setPassword(encodedPassword);
+    Optional<Role> roleUser = roleRepository.findById(1);
+    if (roleUser.isPresent()) {
+      Role roleLocal = roleUser.get();
+      List<Role> roleListLocal = userParam.getRoles();
+      roleListLocal.add(roleLocal);
+      return userRepository.save(userParam);
+    }
     return userRepository.save(userParam);
   }
 
@@ -43,6 +59,7 @@ public class UserServiceImpl implements UserService{
       userLocal.setAccountBalance(userParam.getAccountBalance());
       userLocal.setTransactionsEmit(userParam.getTransactionsEmit());
       userLocal.setTransactionsReceiver(userParam.getTransactionsReceiver());
+      userLocal.setRoles(userParam.getRoles());
       return userRepository.save(userLocal);
     } else {
       return null;
@@ -79,11 +96,16 @@ public class UserServiceImpl implements UserService{
         userOptionalLocal.get().setFriends(friendList);
         this.update(id, userOptionalLocal.get());
       } else {
-       throw new Exception("This person is already in you're friend's list !");
+        throw new Exception("This person is already in you're friend's list !");
       }
 
     } else {
       throw new Exception("This person doesn't exist !");
     }
+  }
+
+  @Override
+  public List<User> findAll() {
+    return userRepository.findAll();
   }
 }

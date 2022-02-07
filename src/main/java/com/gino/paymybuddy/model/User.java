@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,6 +60,12 @@ public class User {
       inverseJoinColumns=@JoinColumn(name="id_friend"))
       private List<User> friends = new ArrayList<>();
 
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "user_role",
+      joinColumns = @JoinColumn(name = "id_user"),
+      inverseJoinColumns = @JoinColumn(name = "id_role"))
+  private List<Role> roles = new ArrayList<>();
 
   public User() {
   }
@@ -161,4 +168,11 @@ public class User {
     friends = friendsParam;
   }
 
+  public List<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(final List<Role> rolesParam) {
+    roles = rolesParam;
+  }
 }

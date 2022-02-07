@@ -26,7 +26,7 @@ USE `mydb` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `account` DOUBLE NULL,
   PRIMARY KEY (`id_user`),
