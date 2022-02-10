@@ -4,14 +4,18 @@ import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.UserService;
 import java.util.Collection;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -42,12 +46,21 @@ public class LoginController {
     return mav;
   }
 
+
+  @GetMapping("/register")
+  public ModelAndView getRegister() {
+    ModelAndView mav = new ModelAndView("register");
+
+    return mav;
+  }
+
   @PostMapping("/register")
-  public String register(@RequestBody final User userParam) throws Exception{
-//  public ResponseEntity<User> register(@RequestBody final User userParam) {
-//    return ResponseEntity.ok().body(userService.insert(userParam));
+  public ModelAndView register(@Valid final User userParam, final Model modelParam) throws Exception {
+    ModelAndView mav = new ModelAndView("login");
+
+    modelParam.addAttribute("user", userParam);
     userService.insert(userParam);
-    return "redirect:/login";
+    return mav;
   }
 //  @RequestMapping(value="/logout", method = RequestMethod.GET)
 //  public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
