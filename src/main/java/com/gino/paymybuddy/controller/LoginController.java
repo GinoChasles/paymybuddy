@@ -43,7 +43,7 @@ public class LoginController {
   }
 
   @PostMapping("/register")
-  public String register(@RequestBody final User userParam) {
+  public String register(@RequestBody final User userParam) throws Exception{
 //  public ResponseEntity<User> register(@RequestBody final User userParam) {
 //    return ResponseEntity.ok().body(userService.insert(userParam));
     userService.insert(userParam);
