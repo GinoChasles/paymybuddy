@@ -50,7 +50,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID")
-        .permitAll();
+        .permitAll()
+        .and()
+        .rememberMe().key("UniqueKey");
   }
 
   @Bean

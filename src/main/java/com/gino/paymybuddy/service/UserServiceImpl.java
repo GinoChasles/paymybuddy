@@ -32,18 +32,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User insert(final User userParam) {
+  public User insert(final User userParam) throws Exception {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String encodedPassword = encoder.encode(userParam.getPassword());
     userParam.setPassword(encodedPassword);
     Optional<Role> roleUser = roleRepository.findById(1);
-    if (roleUser.isPresent()) {
-      Role roleLocal = roleUser.get();
-      List<Role> roleListLocal = userParam.getRoles();
-      roleListLocal.add(roleLocal);
+    Optional<User> userOptionalLocal = this.findUserByEmail(userParam.getEmail());
+    if (userOptionalLocal.isEmpty()) {
+      if (roleUser.isPresent()) {
+        Role roleLocal = roleUser.get();
+        List<Role> roleListLocal = userParam.getRoles();
+        roleListLocal.add(roleLocal);
+        return userRepository.save(userParam);
+      }
       return userRepository.save(userParam);
+    } else {
+      throw new Exception("A user with this email is already register !");
     }
-    return userRepository.save(userParam);
   }
 
   @Override

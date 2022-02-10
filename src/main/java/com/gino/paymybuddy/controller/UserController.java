@@ -28,13 +28,7 @@ public class UserController {
     return "add-connection";
   }
 
-  @PostMapping("/register")
-  public String register(@RequestBody final User userParam) {
-//  public ResponseEntity<User> register(@RequestBody final User userParam) {
-//    return ResponseEntity.ok().body(userService.insert(userParam));
-    userService.insert(userParam);
-    return "redirect:/login";
-  }
+
 
   @GetMapping
   public List<User> getAll() {

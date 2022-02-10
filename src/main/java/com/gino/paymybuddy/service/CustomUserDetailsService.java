@@ -6,6 +6,7 @@ import com.gino.paymybuddy.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,12 +25,15 @@ public class CustomUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
-      User user = userRepository.getUserByUsername(username);
-    if (user == null) {
+//      User user = userRepository.getUserByUsername(username);
+      Optional<User> userOptionalLocal = userRepository.findUserByEmail(username);
+    if (userOptionalLocal.isEmpty()) {
       throw new UsernameNotFoundException("Could not find user");
-    }
+    } else {
+      User user = userOptionalLocal.get();
     List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
     return buildUserForAuthentication(user, authorities);
+    }
   }
 
   private org.springframework.security.core.userdetails.User buildUserForAuthentication(User user,

@@ -8,7 +8,7 @@ public interface UserService {
 
   Optional<User> findById(final int id);
   Optional<User> findUserByEmail(final String email);
-  User insert(final User userParam);
+  User insert(final User userParam) throws Exception;
   User update(final int id, final User userParam);
   void delete(final int id);
   List<User> findAllFriendsByIdUser(final int id);
