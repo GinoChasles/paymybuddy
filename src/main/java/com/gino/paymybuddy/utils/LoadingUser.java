@@ -19,4 +19,10 @@ public class LoadingUser {
     Optional<User> userOptionalLocal = userService.findUserByEmail(currentPrincipalName);
     return userOptionalLocal.map(User::getIdUser).orElse(0);
   }
+
+  public String getUserLogName() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentPrincipalName = authentication.getName();
+    return currentPrincipalName;
+  }
 }

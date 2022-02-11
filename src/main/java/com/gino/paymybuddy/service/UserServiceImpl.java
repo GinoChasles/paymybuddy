@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 //    } else {
 //      return null;
 //    }
-    return userRepository.findAllFriendsByIdUser(id);
+    return userRepository.findFriends(id);
   }
 
   @Override

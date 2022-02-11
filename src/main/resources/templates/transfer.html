@@ -14,11 +14,12 @@
 <div>
     <h3>Send Money</h3>
     <span th:utext="${currentPrincipalName}"></span>
-    <form method="post" th:action="@{/transaction/saveTransaction}">
+
+    <form method="post" th:action="@{/transaction/saveTransaction}" >
         <!--            <label for="connection">Choose a friend</label>-->
-        <select id="connection" name="connection" required>
+        <select id="friendList" th:field="*{friendList}" name="friendList" required>
             <option value="" disabled selected>Select A Connection</option>
-            <option th:each="friend :${friendList}" th:value="${friend.email}" th:text="${friend.email}"></option>
+            <option th:each="friend : ${friendList}" th:value="${friend.email}" th:text="${friend.email}"></option>
         </select>
         <!--            <label for="amount">Amount want to transfer</label>-->
         <input id="amount" type="number" name="amount" step=".01" th:min="0" th:max="${amount}" placeholder="0€"
