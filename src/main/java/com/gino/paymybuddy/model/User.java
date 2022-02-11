@@ -1,5 +1,6 @@
 package com.gino.paymybuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -54,6 +55,7 @@ public class User {
 //  @OneToMany(mappedBy = "user")
 //  List<Commission> commissions;
 
+  @JsonIgnoreProperties({"friends", "transactionsReceiver", "transactionsEmit", "account", "password", "idUser", "bankAccount", "roles"})
   @ManyToMany
   @JoinTable(name="user_has_user",
       joinColumns=@JoinColumn(name="id_user"),

@@ -22,7 +22,7 @@ public class UserController {
   }
 
   @PostMapping("/addFriend")
-  public ModelAndView saveFriend(@RequestParam(value = "email") String email, User userParam)
+  public ModelAndView saveFriend(@RequestParam(value = "email") String email)
       throws Exception {
     LoadingUser loadingUserLocal = new LoadingUser(userService);
     userService.addFriend(email, loadingUserLocal.getUserLogId());

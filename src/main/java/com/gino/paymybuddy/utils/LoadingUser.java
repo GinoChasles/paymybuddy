@@ -17,8 +17,6 @@ public class LoadingUser {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentPrincipalName = authentication.getName();
     Optional<User> userOptionalLocal = userService.findUserByEmail(currentPrincipalName);
-    if (userOptionalLocal.isPresent()) {
-      return userOptionalLocal.get().getIdUser();
-    } else return 0;
+    return userOptionalLocal.map(User::getIdUser).orElse(0);
   }
 }
