@@ -1,10 +1,9 @@
 package com.gino.paymybuddy.controller;
 
-import com.gino.paymybuddy.dto.TransactionDTO;
-import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.TransactionService;
-import org.springframework.http.ResponseEntity;
+import com.gino.paymybuddy.service.UserService;
+import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("transfer")
 public class TransactionController {
   final private TransactionService transactionService;
+  final private UserService userService;
 
-  TransactionController(final TransactionService transactionServiceParam) {
+  TransactionController(final TransactionService transactionServiceParam,
+                        final UserService userServiceParam) {
     transactionService = transactionServiceParam;
+    userService = userServiceParam;
   }
 
   @GetMapping
@@ -36,11 +38,17 @@ public class TransactionController {
     return mav;
   }
   @PostMapping(value = "/saveTransaction")
-  public ResponseEntity<TransactionDTO> saveTransaction(@RequestParam(value = "description") String description,
+  public ModelAndView saveTransaction(@RequestParam(value = "description") String description,
                                                         @RequestParam(value = "amount") double amount,
-                                                        @RequestParam(value = "idEmitter") int idEmitter,
                                                         @RequestParam(value = "idReceiver") int idReceiver) {
-
-    return ResponseEntity.ok(transactionService.createTransaction(idEmitter,idReceiver,description,amount));
+    ModelAndView mav = new ModelAndView("transfer");
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentPrincipalName = authentication.getName();
+    Optional<User> userOptionalLocal = userService.findUserByEmail(currentPrincipalName);
+    if (userOptionalLocal.isPresent()){
+      int idUserLog = userOptionalLocal.get().getIdUser();
+    transactionService.createTransaction(idUserLog,idReceiver,description,amount);
+    }
+    return mav;
   }
 }

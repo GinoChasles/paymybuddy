@@ -58,7 +58,6 @@ public class LoginController {
   public ModelAndView register(@Valid final User userParam, final Model modelParam) throws Exception {
     ModelAndView mav = new ModelAndView("login");
 
-    modelParam.addAttribute("user", userParam);
     userService.insert(userParam);
     return mav;
   }
