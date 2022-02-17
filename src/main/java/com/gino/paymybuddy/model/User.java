@@ -1,6 +1,7 @@
 package com.gino.paymybuddy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -47,9 +48,11 @@ public class User {
   private Account account;
 
   @OneToMany(mappedBy = "emitter")
+  @JsonManagedReference
   List<Transaction> transactionsEmit;
 
   @OneToMany(mappedBy = "receiver")
+  @JsonManagedReference
   List<Transaction> transactionsReceiver;
 
 //  @OneToMany(mappedBy = "user")

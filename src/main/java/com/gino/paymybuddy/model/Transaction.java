@@ -1,5 +1,6 @@
 package com.gino.paymybuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,11 +31,13 @@ public class Transaction {
   private double amount;
 
   @ManyToOne
+  @JsonBackReference
   @JoinColumn(name = "id_emitter")
 //  @NotEmpty(message = "You must select a friend to transfer money")
   private User emitter;
 
   @ManyToOne
+   @JsonBackReference
   @JoinColumn(name = "id_receiver")
 //  @NotEmpty(message = "You must select a friend to transfer money")
   private User receiver;

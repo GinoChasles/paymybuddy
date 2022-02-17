@@ -1,7 +1,3 @@
-insert into mydb.user 
-(`username`, `password`, `email`, `account`) values
-('user1', 'mdp123dsfe!', 'user1@gmail.com', 0 ),
-('user2', 'mdp123dsfe!', 'user2@gmail.com', 10.50 );
 insert into mydb.enterprise
 (`name`, `siret`) values
 ('PayMyBuddy', 'FAKESIRET');

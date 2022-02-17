@@ -12,6 +12,6 @@ public interface TransactionService {
   Transaction insert(Transaction transactionParam);
   Page<Transaction> findAllByEmitterId(final int id, Pageable pageableParam);
   Page<Transaction> findAllByReceiverId(final int id, Pageable pageableParam);
-  TransactionDTO createTransaction(final int idEmitter, final int idReceiver, final String description, final double amount);
+  Transaction createTransaction(final int idEmitter, final String connection, final String description, final double amount);
   List<Transaction> findAll();
 }

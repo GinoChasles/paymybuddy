@@ -23,7 +23,7 @@ public class Commission {
   @PositiveOrZero
   private double pourcentage;
 
-  @Column(name = "count")
+  @Column(name = "count", columnDefinition = "Decimal(10,2)")
   @PositiveOrZero
   private double commisssionCount;
 

@@ -22,7 +22,6 @@ public class LoadingUser {
 
   public String getUserLogName() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String currentPrincipalName = authentication.getName();
-    return currentPrincipalName;
+    return authentication.getName();
   }
 }

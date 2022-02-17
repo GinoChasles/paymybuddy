@@ -20,19 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-  private final DataSource dataSourceParam;
-
-  public SpringSecurityConfig(final DataSource dataSourceParamParam) {
-    dataSourceParam = dataSourceParamParam;
-  }
-
   @Override
   public void configure(HttpSecurity http) throws Exception {
     http
         .httpBasic();
     http
         .authorizeRequests()
-        .antMatchers("/user", "/transaction/saveTransaction", "/transfer", "/home").hasRole("USER")
+        .antMatchers("/user", "/transfer/saveTransaction", "/transfer", "/home").hasRole("USER")
         .antMatchers("/login", "/", "/register").permitAll()
         .antMatchers("/admin").hasRole("ADMIN")
         .anyRequest().authenticated()
@@ -52,7 +46,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         .deleteCookies("JSESSIONID")
         .permitAll()
         .and()
-        .rememberMe().key("UniqueKey");
+        .rememberMe().key("UniqueKey").tokenValiditySeconds(3600);
   }
 
   @Bean
@@ -72,34 +66,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(authenticationProvider());
   }
-
-//  @Autowired
-//  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//    auth.jdbcAuthentication()
-//        .dataSource(dataSourceParam)
-//        .usersByUsernameQuery("select username,password, email "
-//            + "from user "
-//            + "where username = ?");
-//        .authoritiesByUsernameQuery("select email,authority "
-//            + "from authorities "
-//            + "where email = ?");
-//  }
-
-//  @Override
-//  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-////    auth.inMemoryAuthentication()
-////        .withUser("springuser").password(passwordEncoder().encode("spring123")).roles("USER")
-////        .and()
-////        .withUser("springadmin").password(passwordEncoder().encode("admin123"))
-////        .roles("ADMIN", "USER");
-//    auth.jdbcAuthentication()
-//        .passwordEncoder(passwordEncoder())
-//        .dataSource(dataSourceParam)
-//        .usersByUsernameQuery("select username as principal, password as credentials from user where username = ?");
-////        .authoritiesByUsernameQuery("select  user.id_user, username, id_role from user_role inner join user on user.id_user = user_role.id_user where username=?");
-////        .authoritiesByUsernameQuery("select user_username as principal, role.role as role from user_role where user_username = ?");
-//  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {

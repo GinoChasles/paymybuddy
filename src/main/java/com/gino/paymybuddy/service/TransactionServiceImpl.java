@@ -1,7 +1,9 @@
 package com.gino.paymybuddy.service;
 
 import com.gino.paymybuddy.dto.TransactionDTO;
+import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.model.Commission;
+import com.gino.paymybuddy.model.Enterprise;
 import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.repository.TransactionRepository;
@@ -19,16 +21,19 @@ public class TransactionServiceImpl implements TransactionService{
   private final UserService userService;
   private final EnterpriseService enterpriseService;
   private final CommissionService commissionService;
+  private final BankAccountService bankAccountService;
 
   public TransactionServiceImpl(
       final TransactionRepository transactionRepositoryParam,
       final UserService userServiceParam,
       final EnterpriseService enterpriseServiceParam,
-      final CommissionService commissionServiceParam) {
+      final CommissionService commissionServiceParam,
+      final BankAccountService bankAccountServiceParam) {
     transactionRepository = transactionRepositoryParam;
     userService = userServiceParam;
     enterpriseService = enterpriseServiceParam;
     commissionService = commissionServiceParam;
+    bankAccountService = bankAccountServiceParam;
   }
 
 
@@ -53,11 +58,11 @@ public class TransactionServiceImpl implements TransactionService{
   }
 
   @Override
-  public TransactionDTO createTransaction(final int idEmitter, final int idReceiver,
+  public Transaction createTransaction(final int idEmitter, final String connection,
                                           final String description, final double amount) {
     User receiver;
     User emitter;
-    Optional<User> optionalReceiver =  userService.findById(idReceiver);
+    Optional<User> optionalReceiver =  userService.findUserByEmail(connection);
     Optional<User> optionalEmitter = userService.findById(idEmitter);
     double commission;
 
@@ -65,22 +70,22 @@ public class TransactionServiceImpl implements TransactionService{
       receiver = optionalReceiver.get();
       emitter = optionalEmitter.get();
 
-      Transaction transactionLocal = new Transaction();
-      transactionLocal.setAmount(amount);
-      transactionLocal.setDescription(description);
-      transactionLocal.setEmitter(emitter);
-      transactionLocal.setReceiver(receiver);
-      transactionRepository.save(transactionLocal);
-
-      TransactionDTO result = new TransactionDTO();
-      result.setConnection(emitter.getUsername());
-      result.setDescription(description);
+      Transaction result = new Transaction();
       result.setAmount(amount);
+      result.setDescription(description);
+      result.setEmitter(emitter);
+      result.setReceiver(receiver);
+      transactionRepository.save(result);
+
+      TransactionDTO transactionDTOLocal = new TransactionDTO();
+      transactionDTOLocal.setConnection(emitter.getUsername());
+      transactionDTOLocal.setDescription(description);
+      transactionDTOLocal.setAmount(amount);
 
       Commission commissionLocal = new Commission();
       commissionLocal.setPourcentage(Constante.COMMISSION_POURCENTAGE);
       commissionLocal.setEnterprise(enterpriseService.findById(Constante.ENTERPRISE_ID).get());
-      commissionLocal.setTransaction(transactionLocal);
+      commissionLocal.setTransaction(result);
       commission = amount/100 * commissionLocal.getPourcentage();
       if (commission < 0.01) {
         commission = 0.01;
@@ -90,6 +95,12 @@ public class TransactionServiceImpl implements TransactionService{
 
       emitter.setAccountBalance(emitter.getAccountBalance() - amount - commission);
       receiver.setAccountBalance(receiver.getAccountBalance() + amount);
+
+
+      Enterprise enterpriseLocal = enterpriseService.findById(Constante.ENTERPRISE_ID).get();
+      Account enterpriseAccount = enterpriseLocal.getAccount();
+      enterpriseAccount.setAmount(enterpriseAccount.getAmount() + commission);
+      bankAccountService.update(enterpriseAccount.getIdBankaccount(), enterpriseAccount);
 
       userService.update(emitter.getIdUser(), emitter);
       userService.update(receiver.getIdUser(), receiver);
