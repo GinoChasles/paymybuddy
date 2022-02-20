@@ -11,4 +11,5 @@ public interface BankAccountService {
   void delete(final int id);
   Account update(final int id, final Account accountParam);
   List<Account> findAllByUserId(final int id);
+
 }

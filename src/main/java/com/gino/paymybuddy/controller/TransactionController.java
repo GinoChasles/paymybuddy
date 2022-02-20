@@ -57,8 +57,6 @@ public class TransactionController {
     mav.addObject("amount", userService.findById(loadingUserLocal.getUserLogId()));
     mav.addObject("friendList", userService.findAllFriendsByIdUser(loadingUserLocal.getUserLogId()));
     mav.addObject("postTransaction", new TransactionDTO());
-    String currentPrincipalName = loadingUserLocal.getUserLogName();
-    mav.addObject("currentPrincipalName", currentPrincipalName);
 
     return mav;
   }

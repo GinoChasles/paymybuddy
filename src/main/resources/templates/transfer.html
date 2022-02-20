@@ -19,11 +19,13 @@
     </nav>
 </div>
 
-<div th:insert="~{add-connection}"></div>
 
 <div class="container my-4">
+    <div class="d-flex justify-content-between">
     <h3>Send Money</h3>
-    <span th:utext="${currentPrincipalName}"></span>
+    <div  th:insert="~{add-connection}"></div>
+
+    </div>
 <div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
     <form method="post" th:action="@{/transfer/saveTransaction}" th:object="${postTransaction}" >
         <!--            <label for="connection">Choose a friend</label>-->
