@@ -1,5 +1,6 @@
 package com.gino.paymybuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ public class Commission {
   private double commisssionCount;
 
   @OneToOne
+  @JsonManagedReference
   @JoinColumn(name = "id_transaction", referencedColumnName = "id_transaction")
   private Transaction transaction;
 

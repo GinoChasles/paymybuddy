@@ -2,6 +2,7 @@ package com.gino.paymybuddy.service;
 
 import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.repository.BankAccountRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     } else {
       return null;
     }
+  }
+
+  @Override
+  public List<Account> findAllByUserId(final int id) {
+    return bankAccountRepository.findAllByUser_IdUser(id);
   }
 }

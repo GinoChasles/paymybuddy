@@ -8,8 +8,10 @@ import com.gino.paymybuddy.service.UserService;
 import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -36,10 +38,22 @@ public class TransactionController {
   }
 
   @GetMapping
-  public ModelAndView getTransactions() {
+  public ModelAndView getTransactions(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("transfer");
+    int page = 0;
+    int size = 3;
+
+    if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+      page = Integer.parseInt(request.getParameter("page")) - 1;
+    }
+
+    if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+      size = Integer.parseInt(request.getParameter("size"));
+    }
+
     LoadingUser loadingUserLocal = new LoadingUser(userService);
-    mav.addObject("transactions", transactionService.findAll());
+    int idUserLog = loadingUserLocal.getUserLogId();
+    mav.addObject("transactions", transactionService.findAllByReceiverId(idUserLog, PageRequest.of(page, size)));
     mav.addObject("amount", userService.findById(loadingUserLocal.getUserLogId()));
     mav.addObject("friendList", userService.findAllFriendsByIdUser(loadingUserLocal.getUserLogId()));
     mav.addObject("postTransaction", new TransactionDTO());

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
-  Page<Transaction> findAllByEmitter(final int idUser, Pageable pageableParam);
-  Page<Transaction> findAllByReceiver(final int idUser, Pageable pageableParam);
+  Page<Transaction> findAllByEmitter_IdUser(final int idUser, Pageable pageableParam);
+  Page<Transaction> findAllByReceiver_IdUser(final int idUser, Pageable pageableParam);
 
 }

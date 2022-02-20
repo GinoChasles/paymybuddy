@@ -49,12 +49,12 @@ public class TransactionServiceImpl implements TransactionService{
 
   @Override
   public Page<Transaction> findAllByEmitterId(final int id, Pageable pageableParam) {
-    return transactionRepository.findAllByEmitter(id, pageableParam);
+    return transactionRepository.findAllByEmitter_IdUser(id, pageableParam);
   }
 
   @Override
   public Page<Transaction> findAllByReceiverId(final int id, Pageable pageableParam) {
-    return transactionRepository.findAllByReceiver(id, pageableParam);
+    return transactionRepository.findAllByReceiver_IdUser(id, pageableParam);
   }
 
   @Override
@@ -78,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService{
       transactionRepository.save(result);
 
       TransactionDTO transactionDTOLocal = new TransactionDTO();
-      transactionDTOLocal.setConnection(emitter.getUsername());
+      transactionDTOLocal.setConnection(receiver.getUsername());
       transactionDTOLocal.setDescription(description);
       transactionDTOLocal.setAmount(amount);
 
@@ -100,7 +100,7 @@ public class TransactionServiceImpl implements TransactionService{
       Enterprise enterpriseLocal = enterpriseService.findById(Constante.ENTERPRISE_ID).get();
       Account enterpriseAccount = enterpriseLocal.getAccount();
       enterpriseAccount.setAmount(enterpriseAccount.getAmount() + commission);
-      bankAccountService.update(enterpriseAccount.getIdBankaccount(), enterpriseAccount);
+      bankAccountService.update(enterpriseAccount.getIdAccount(), enterpriseAccount);
 
       userService.update(emitter.getIdUser(), emitter);
       userService.update(receiver.getIdUser(), receiver);

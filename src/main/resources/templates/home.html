@@ -9,6 +9,13 @@
 <body>
 <!--<h1>Welcome!</h1>-->
 <div th:insert="~{navbar :: nav}"></div>
+<div class="bg-secondary bg-opacity-25 p-2 pl-3">
+    <nav aria-label="breadcrumb" >
+        <ol class="breadcrumb" style="margin: 0;">
+            <li class="breadcrumb-item" aria-current="page">Home</li>
+        </ol>
+    </nav>
+</div>
 <span th:utext="${currentPrincipalName}"></span>
 <span th:utext="${authorities}"></span>
 

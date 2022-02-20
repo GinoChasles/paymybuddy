@@ -42,6 +42,7 @@ public class Transaction {
 //  @NotEmpty(message = "You must select a friend to transfer money")
   private User receiver;
 
+  @JsonBackReference
   @OneToOne(mappedBy = "transaction")
   private Commission commission;
 

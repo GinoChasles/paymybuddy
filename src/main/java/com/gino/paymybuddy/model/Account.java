@@ -54,12 +54,12 @@ public class Account {
 
   }
 
-  public int getIdBankaccount() {
+  public int getIdAccount() {
     return idAccount;
   }
 
-  public void setIdBankaccount(final int idBankAccountParam) {
-    idAccount = idBankAccountParam;
+  public void setIdAccount(final int idAccountParam) {
+    idAccount = idAccountParam;
   }
 
   public int getIban() {
