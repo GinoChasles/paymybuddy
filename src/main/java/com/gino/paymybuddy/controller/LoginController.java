@@ -2,6 +2,7 @@ package com.gino.paymybuddy.controller;
 
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.UserService;
+import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.Collection;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -37,10 +38,10 @@ public class LoginController {
   @GetMapping("/home")
   public ModelAndView getTransactions(User userParam) {
     ModelAndView mav = new ModelAndView("home");
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String currentPrincipalName = authentication.getName();
-    Collection<? extends GrantedAuthority> test = authentication.getAuthorities();
-    mav.addObject("authorities", test);
+    LoadingUser loadingUserLocal = new LoadingUser(userService);
+
+    String currentPrincipalName = userService.findUserByEmail(loadingUserLocal.getUserLogName()).get().getUsername();
+
     mav.addObject("currentPrincipalName", currentPrincipalName);
 
     return mav;
