@@ -11,5 +11,6 @@ public interface BankAccountService {
   void delete(final int id);
   Account update(final int id, final Account accountParam);
   List<Account> findAllByUserId(final int id);
-
+  void transferToUserAccount(final int idUser, final int idAccount, final double value) throws Exception;
+  void transferToBankAccount(final int idUser, final int idAccount, final double value) throws Exception;
 }
