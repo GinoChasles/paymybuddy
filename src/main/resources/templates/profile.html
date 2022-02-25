@@ -38,6 +38,9 @@
                 <td th:text="${transaction.description}"/>
                 <td th:text="${transaction.amount}"/>
             </tr>
+            <tr th:if="${transactions.empty}">
+                <td colspan="3">No transaction saved</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -88,7 +91,7 @@
             </thead>
             <tbody>
             <tr th:if="${listBankAccount.empty}">
-                <td colspan="3">No bank account saved</td>
+                <td colspan="5">No bank account saved</td>
             </tr>
             <tr th:each="bankAccount: ${listBankAccount}" class="text-center">
                 <td><span th:text="${bankAccount.iban}"> Iban du compte </span></td>

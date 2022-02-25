@@ -61,6 +61,9 @@
             <td th:text="${transaction.description}"/>
             <td th:text="${transaction.amount}"/>
         </tr>
+        <tr th:if="${transactions.empty}">
+            <td colspan="3">No transaction saved</td>
+        </tr>
         </tbody>
     </table>
     </div>
