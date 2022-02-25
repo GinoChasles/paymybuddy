@@ -44,8 +44,9 @@ public class User {
   @PositiveOrZero
   private double accountBalance;
 
-  @OneToOne(mappedBy = "user")
-  private Account account;
+  @OneToMany(mappedBy = "user")
+  @JsonManagedReference
+  private List<Account> account;
 
   @OneToMany(mappedBy = "emitter")
   @JsonManagedReference
@@ -123,19 +124,11 @@ public class User {
     accountBalance = accountBalanceParam;
   }
 
-  public Account getBankAccount() {
+  public List<Account> getAccount() {
     return account;
   }
 
-  public void setBankAccount(final Account accountParam) {
-    account = accountParam;
-  }
-
-  public Account getAccount() {
-    return account;
-  }
-
-  public void setAccount(final Account accountParam) {
+  public void setAccount(final List<Account> accountParam) {
     account = accountParam;
   }
 

@@ -5,6 +5,7 @@ import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.TransactionService;
 import com.gino.paymybuddy.service.UserService;
+import com.gino.paymybuddy.utils.Constante;
 import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.List;
 import java.util.Optional;
@@ -53,8 +54,10 @@ public class TransactionController {
 
     LoadingUser loadingUserLocal = new LoadingUser(userService);
     int idUserLog = loadingUserLocal.getUserLogId();
+    User userLog = userService.findById(loadingUserLocal.getUserLogId()).get();
+    double amountMax = userLog.getAccountBalance() - (userLog.getAccountBalance() * Constante.COMMISSION_POURCENTAGE / 100);
     mav.addObject("transactions", transactionService.findAllByReceiverId(idUserLog, PageRequest.of(page, size)));
-    mav.addObject("amount", userService.findById(loadingUserLocal.getUserLogId()));
+    mav.addObject("amountMax", amountMax);
     mav.addObject("friendList", userService.findAllFriendsByIdUser(loadingUserLocal.getUserLogId()));
     mav.addObject("postTransaction", new TransactionDTO());
 

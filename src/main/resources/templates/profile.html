@@ -12,52 +12,14 @@
 <div th:insert="~{navbar :: nav}"></div>
 
 
-    <div class="bg-secondary bg-opacity-25 p-2 pl-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb" style="margin: 0;">
-                <li class="breadcrumb-item" aria-current="page">Home</li>
-                <li class="breadcrumb-item active" aria-current="page">Profile</li>
-            </ol>
-        </nav>
-    </div>
-<div class="container">
-    <h3>Link's Account</h3>
-    <div class="border border-dark border-3">
-
-        <table class="table text-center table-borderless align-middle m-0">
-            <thead class="bg-success text-light">
-            <tr>
-                <th>Iban du compte</th>
-                <th>Numéro du compte</th>
-                <th>BIC du compte</th>
-                <th>Solde</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${listBankAccount.empty}">
-                <td colspan="3">No bank account saved</td>
-            </tr>
-            <tr th:each="bankAccount: ${listBankAccount}" class="text-center">
-                <td><span th:text="${bankAccount.iban}"> Iban du compte </span></td>
-                <td><span th:text="${bankAccount.accountnumber}"> Numéro du compte </span></td>
-                <td><span th:text="${bankAccount.bic}"> BIC du compte </span></td>
-                <td><span th:text="${bankAccount.amount}"> Solde </span></td>
-                <td>
-                    <a th:href="@{/bankAccount/{id}(id=${bankAccount.idAccount})}">
-                        <button class="btn btn-danger">Delete</button>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="bg-secondary bg-opacity-25 p-2 pl-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="margin: 0;">
+            <li class="breadcrumb-item" aria-current="page">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+        </ol>
+    </nav>
 </div>
-
-
-<div th:insert="~{add-bankAccount}"></div>
-
-
 
 <div class="container">
     <h3>History transactions send</h3>
@@ -84,7 +46,7 @@
     <ul class="pagination justify-content-center font-weight-medium">
         <li class="page-item" th:classappend="${transactions.number eq 0} ? 'disabled'">
             <a class="page-link svg-icon"
-               th:href="@{/transfer?page={id}(id=${transactions.number lt 2 ? 1 : transactions.number})}"
+               th:href="@{/user/profile?page={id}(id=${transactions.number lt 2 ? 1 : transactions.number})}"
                aria-label="Previous"
                title="Previous Page" rel="tooltip">
                 <span aria-hidden="true">&lt;</span>
@@ -92,7 +54,7 @@
         </li>
         <li class="page-item" th:classappend="${i eq transactions.number + 1} ? 'active'"
             th:each="i : ${#numbers.sequence( transactions.number + 1, transactions.totalPages > 10 + transactions.number ? transactions.number + 10 : transactions.totalPages, 1)}">
-            <a class="page-link" th:href="@{/transfer?page={id}(id=${i})}" th:text="${i}"
+            <a class="page-link" th:href="@{/user/profile?page={id}(id=${i})}" th:text="${i}"
                th:title="${'Page '+ i}"
                rel="tooltip"></a>
         </li>
@@ -102,7 +64,7 @@
             </a>
         </li>
         <li class="page-item" th:classappend="${transactions.number + 1 eq transactions.totalPages} ? 'disabled'">
-            <a class="page-link svg-icon" th:href="@{/transfer?page={id}(id=${transactions.number + 2})}"
+            <a class="page-link svg-icon" th:href="@{/user/profile?page={id}(id=${transactions.number + 2})}"
                aria-label="Next"
                title="Next Page" rel="tooltip">
                 <span aria-hidden="true">&gt;</span>
@@ -110,5 +72,80 @@
         </li>
     </ul>
 </nav>
+<div class="container">
+    <h3>Link's Account</h3>
+    <div class="border border-dark border-3">
+
+        <table class="table text-center table-borderless align-middle m-0">
+            <thead class="bg-success text-light">
+            <tr>
+                <th>Iban du compte</th>
+                <th>Numéro du compte</th>
+                <th>BIC du compte</th>
+                <th>Solde</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${listBankAccount.empty}">
+                <td colspan="3">No bank account saved</td>
+            </tr>
+            <tr th:each="bankAccount: ${listBankAccount}" class="text-center">
+                <td><span th:text="${bankAccount.iban}"> Iban du compte </span></td>
+                <td><span th:text="${bankAccount.accountnumber}"> Numéro du compte </span></td>
+                <td><span th:text="${bankAccount.bic}"> BIC du compte </span></td>
+                <td><span th:text="${bankAccount.amount}"> Solde </span></td>
+                <td>
+                    <form th:action="@{/bankAccount/{id}(id=${bankAccount.idAccount})}" th:method="post"
+                          onclick="return confirm('Are you sure you want to delete this item?');">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div th:insert="~{add-bankAccount}"></div>
+
+
+<div class="container my-4">
+<h4>Transfer to bank account</h4>
+<div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
+    <form method="post" th:action="@{/bankAccount/transferIn}" >
+        <!--            <label for="connection">Choose a friend</label>-->
+        <select th:name="idAccount" name="connection" required>
+            <option value="" disabled selected>Add to..</option>
+            <option th:each="account : ${listBankAccount}" th:value="${account.idAccount}" th:text="${account.accountnumber}"></option>
+        </select>
+        <!--            <label for="amount">Amount want to transfer</label>-->
+        <input  type="number" name="amount" step=".01" th:min="0"  placeholder="0€"
+               required  style="width: 100px;" class="text-end" th:name="amount">
+        <!--            <label for="description">Description</label>-->
+        <button type="submit" class="text-light bg-success rounded">Transfer</button>
+    </form>
+</div>
+</div>
+<div class="container my-4">
+    <h4>Transfer to user account</h4>
+
+<div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
+    <form method="post" th:action="@{/bankAccount/transferOut}"  >
+        <!--            <label for="connection">Choose a friend</label>-->
+        <select th:name="idAccount"  name="connection" required>
+            <option value="" disabled selected>Substract to</option>
+            <option th:each="account : ${listBankAccount}" th:value="${account.idAccount}" th:text="${account.accountnumber}" ></option>
+        </select>
+        <!--            <label for="amount">Amount want to transfer</label>-->
+        <input  type="number" name="amount" step=".01" th:min="0"  placeholder="0€"
+               required  style="width: 100px;" class="text-end" th:name="amount">
+        <!--            <label for="description">Description</label>-->
+        <button type="submit" class="text-light bg-success rounded">Transfer</button>
+    </form>
+</div>
+</div>
 </body>
 </html>

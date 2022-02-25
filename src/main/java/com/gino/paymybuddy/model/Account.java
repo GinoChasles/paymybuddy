@@ -1,11 +1,13 @@
 package com.gino.paymybuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.PositiveOrZero;
@@ -32,7 +34,8 @@ public class Account {
   private double amount;
 
 
-  @OneToOne
+  @ManyToOne
+  @JsonBackReference
   @JoinColumn(name = "id_user")
   private User user;
 
