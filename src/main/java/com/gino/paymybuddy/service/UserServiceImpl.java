@@ -6,6 +6,9 @@ import com.gino.paymybuddy.repository.RoleRepository;
 import com.gino.paymybuddy.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public User insert(final User userParam) throws Exception {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String encodedPassword = encoder.encode(userParam.getPassword());
@@ -78,18 +82,16 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<User> findAllFriendsByIdUser(final int id) {
-//    Optional<User> optionalUserLocal = this.findById(id);
-//    if (optionalUserLocal.isPresent()) {
-//      User userLocal = optionalUserLocal.get();
-//      userLocal.setFriends(userRepository.findAllFriendsByIdUser(id));
-//      return userLocal.getFriends();
-//    } else {
-//      return null;
-//    }
     return userRepository.findFriends(id);
   }
 
   @Override
+  public Page<User> findAllFriendsByIdUserPage(final int id, final Pageable pageableParam) {
+    return userRepository.findFriendsPage(id, pageableParam);
+  }
+
+  @Override
+  @Transactional
   public void addFriend(final String email, final int id) throws Exception {
     Optional<User> userOptionalLocal = this.findById(id);
     Optional<User> optionalUserLocal = this.findUserByEmail(email);

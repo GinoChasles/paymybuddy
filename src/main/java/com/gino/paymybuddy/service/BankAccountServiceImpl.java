@@ -5,6 +5,7 @@ import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.repository.BankAccountRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,6 +59,7 @@ public class BankAccountServiceImpl implements BankAccountService {
   }
 
   @Override
+  @Transactional
   public void transferToUserAccount(final int idUser, final int idAccount, final double value) throws Exception{
     User userLocal = userService.findById(idUser).get();
     Account accountLocal = bankAccountRepository.findById(idAccount).get();
@@ -74,6 +76,7 @@ public class BankAccountServiceImpl implements BankAccountService {
   }
 
   @Override
+  @Transactional
   public void transferToBankAccount(final int idUser, final int idAccount, final double value)
       throws Exception {
     User userLocal = userService.findById(idUser).get();

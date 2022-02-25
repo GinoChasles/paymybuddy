@@ -5,10 +5,12 @@ import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.BankAccountService;
 import com.gino.paymybuddy.service.TransactionService;
 import com.gino.paymybuddy.service.UserService;
+import com.gino.paymybuddy.utils.Constante;
 import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +35,7 @@ public class UserController {
   }
 
   @PostMapping("/addFriend")
-  public ModelAndView saveFriend(@RequestParam(value = "email") String email)
+  public ModelAndView saveFriend(@RequestParam(value = "email") String email, BindingResult result)
       throws Exception {
     LoadingUser loadingUserLocal = new LoadingUser(userService);
     userService.addFriend(email, loadingUserLocal.getUserLogId());
@@ -45,8 +47,8 @@ public class UserController {
   public ModelAndView profile(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("/profile");
 
-    int page = 0;
-    int size = 3;
+    int page = Constante.PAGE_NUMBER;
+    int size = Constante.PAGE_SIZE;
 
     if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
       page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -58,6 +60,7 @@ public class UserController {
 
     LoadingUser loadingUserLocal = new LoadingUser(userService);
     int idUserLog = loadingUserLocal.getUserLogId();
+    mav.addObject("accountBalance", userService.findById(idUserLog).get().getAccountBalance());
     mav.addObject("transactions", transactionService.findAllByEmitterId(idUserLog, PageRequest.of(page, size)));
     mav.addObject("listBankAccount", bankAccountService.findAllByUserId(idUserLog ));
     mav.addObject("addBank", new Account());
@@ -69,5 +72,24 @@ public class UserController {
   @GetMapping
   public List<User> getAll() {
     return userService.findAll();
+  }
+
+  @GetMapping("/contact")
+  public ModelAndView getContact(HttpServletRequest request) {
+    ModelAndView mav = new ModelAndView("/contact");
+    LoadingUser loadingUserLocal = new LoadingUser(userService);
+    int page = Constante.PAGE_NUMBER;
+    int size = Constante.PAGE_SIZE;
+
+    if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+      page = Integer.parseInt(request.getParameter("page")) - 1;
+    }
+
+    if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+      size = Integer.parseInt(request.getParameter("size"));
+    }
+    int idUserLog = loadingUserLocal.getUserLogId();
+    mav.addObject("friendsList", userService.findAllFriendsByIdUserPage(idUserLog, PageRequest.of(page, size)));
+    return mav;
   }
 }

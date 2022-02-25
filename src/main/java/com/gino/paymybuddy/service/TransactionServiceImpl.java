@@ -10,6 +10,7 @@ import com.gino.paymybuddy.repository.TransactionRepository;
 import com.gino.paymybuddy.utils.Constante;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class TransactionServiceImpl implements TransactionService{
   }
 
   @Override
+  @Transactional
   public Transaction insert(final Transaction transactionParam) {
     return transactionRepository.save(transactionParam);
   }
@@ -58,6 +60,7 @@ public class TransactionServiceImpl implements TransactionService{
   }
 
   @Override
+  @Transactional
   public Transaction createTransaction(final int idEmitter, final String connection,
                                           final String description, final double amount) {
     User receiver;

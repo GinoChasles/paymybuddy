@@ -41,8 +41,8 @@ public class TransactionController {
   @GetMapping
   public ModelAndView getTransactions(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("transfer");
-    int page = 0;
-    int size = 3;
+    int page = Constante.PAGE_NUMBER;
+    int size = Constante.PAGE_SIZE;
 
     if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
       page = Integer.parseInt(request.getParameter("page")) - 1;

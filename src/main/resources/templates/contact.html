@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="~{navbar :: nav}"></div>
+
+<div class="bg-secondary bg-opacity-25 p-2 pl-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="margin: 0;">
+            <li class="breadcrumb-item" aria-current="page">Home</li>
+            <li class="breadcrumb-item active" aria-current="page">Contact</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="text-center my-4" th:insert="~{add-connection}"></div>
+
+
+<div class="container">
+    <h3>My FriendList</h3>
+    <div class="border border-dark border-3">
+<table class="table text-center table-borderless align-middle m-0">
+    <thead class="bg-success text-light">
+    <tr>
+        <th>Username</th>
+        <th>Mail</th>
+        <th>Suppression</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${friendsList.empty}">
+        <td colspan="3">No contact saved</td>
+    </tr>
+    <tr th:each="contact: ${friendsList}" class="text-center " >
+        <td><span th:text="${contact.username}"> Username </span></td>
+        <td><span th:text="${contact.email}"> Email </span></td>
+        <td>
+            <a th:href="@{/}"><button class="btn btn-danger">Delete</button></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+    </div>
+</div>
+<nav aria-label="Pagination" th:if="${friendsList.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-medium">
+        <li class="page-item" th:classappend="${friendsList.number eq 0} ? 'disabled'">
+            <a class="page-link svg-icon"
+               th:href="@{/user/contact?page={id}(id=${friendsList.number lt 2 ? 1 : friendsList.number})}"
+               aria-label="Previous"
+               title="Previous Page" rel="tooltip">
+                <span aria-hidden="true" >&lt;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq friendsList.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( friendsList.number + 1, friendsList.totalPages > 10 + friendsList.number ? friendsList.number + 10 : friendsList.totalPages, 1)}">
+            <a class="page-link" th:href="@{/user/contact?page={id}(id=${i})}" th:text="${i}"
+               th:title="${'Page '+ i}"
+               rel="tooltip"></a>
+        </li>
+        <li class="page-item disabled" th:if="${friendsList.number + 10 < friendsList.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" width="20" height="20"></span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${friendsList.number + 1 eq friendsList.totalPages} ? 'disabled'">
+            <a class="page-link svg-icon" th:href="@{/user/contact?page={id}(id=${friendsList.number + 2})}"
+               aria-label="Next"
+               title="Next Page" rel="tooltip">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
