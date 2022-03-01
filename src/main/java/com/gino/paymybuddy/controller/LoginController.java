@@ -2,30 +2,27 @@ package com.gino.paymybuddy.controller;
 
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.UserService;
+import com.gino.paymybuddy.utils.AppPropertiesExt;
 import com.gino.paymybuddy.utils.LoadingUser;
-import java.util.Collection;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 public class LoginController {
 
   private final UserService userService;
+  private final AppPropertiesExt appPropertiesExt;
 
-  public LoginController(final UserService userServiceParam) {
+
+  public LoginController(final UserService userServiceParam,
+                         final AppPropertiesExt appPropertiesExtParam) {
     userService = userServiceParam;
+    appPropertiesExt = appPropertiesExtParam;
   }
 
 
@@ -51,15 +48,20 @@ public class LoginController {
   @GetMapping("/register")
   public ModelAndView getRegister() {
     ModelAndView mav = new ModelAndView("register");
-
+//    mav.addObject("userAlreadyExist");
     return mav;
   }
 
   @PostMapping("/register")
-  public ModelAndView register(@Valid final User userParam, final Model modelParam) throws Exception {
+  public ModelAndView register(@Valid final User userParam){
     ModelAndView mav = new ModelAndView("login");
+//try {
 
     userService.insert(userParam);
+//} catch (Exception e) {
+//  mav.addObject("userAlreadyExist", this.appPropertiesExt.getError().getUserAlreadyExist());
+//  mav.setViewName("redirect:/register");
+//}
     return mav;
   }
 //  @RequestMapping(value="/logout", method = RequestMethod.GET)

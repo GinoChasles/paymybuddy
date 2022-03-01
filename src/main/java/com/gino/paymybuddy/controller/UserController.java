@@ -1,22 +1,26 @@
 package com.gino.paymybuddy.controller;
 
+import com.gino.paymybuddy.exceptions.UserAlreadyInFriendList;
+import com.gino.paymybuddy.exceptions.UserDoesNotExist;
 import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.BankAccountService;
 import com.gino.paymybuddy.service.TransactionService;
 import com.gino.paymybuddy.service.UserService;
+import com.gino.paymybuddy.utils.AppPropertiesExt;
 import com.gino.paymybuddy.utils.Constante;
 import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("user")
@@ -25,22 +29,31 @@ public class UserController {
   private final UserService userService;
   private final TransactionService transactionService;
   private final BankAccountService bankAccountService;
+  private final AppPropertiesExt appPropertiesExt;
 
   public UserController(final UserService userServiceParam,
                         final TransactionService transactionServiceParam,
-                        final BankAccountService bankAccountServiceParam) {
+                        final BankAccountService bankAccountServiceParam,
+                        final AppPropertiesExt appPropertiesExtParam) {
     userService = userServiceParam;
     transactionService = transactionServiceParam;
     bankAccountService = bankAccountServiceParam;
+    appPropertiesExt = appPropertiesExtParam;
   }
 
   @PostMapping("/addFriend")
-  public ModelAndView saveFriend(@RequestParam(value = "email") String email, BindingResult result)
-      throws Exception {
+  public ModelAndView saveFriend(@RequestParam(value = "email") String email) {
     LoadingUser loadingUserLocal = new LoadingUser(userService);
-    userService.addFriend(email, loadingUserLocal.getUserLogId());
+    ModelAndView mav = new ModelAndView("redirect:/user/contact");
+    try {
 
-    return new ModelAndView("redirect:/transfer");
+    userService.addFriend(email, loadingUserLocal.getUserLogId());
+    } catch (UserAlreadyInFriendList|UserDoesNotExist e) {
+      mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
+      mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
+    }
+
+    return mav;
   }
 
   @GetMapping("/profile")
@@ -90,6 +103,10 @@ public class UserController {
     }
     int idUserLog = loadingUserLocal.getUserLogId();
     mav.addObject("friendsList", userService.findAllFriendsByIdUserPage(idUserLog, PageRequest.of(page, size)));
+//    mav.addObject("alreadyInFriendList");
+//    mav.addObject("userDoesNotExist");
+    mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
+    mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
     return mav;
   }
 }

@@ -13,8 +13,12 @@
     <p class="mt-2 p-2 fw-light text-light bg-success rounded col-6 justify-content-center d-flex ">Pay My Buddy </p>
 
     <form th:action="@{/register}" method="post" class="card-body ">
-        <div class="form-group mt-2"><label><input class="form-control" type="email" name="email" placeholder="Email"
+        <div class="form-group mt-2"><label><input class="form-control" type="email"  name="email" placeholder="Email"
                                               required/> </label></div>
+<!--        <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="${userAlreadyExist}" />-->
+<!--        <div th:if="${userAlreadyExist}" class="alert alert-danger">-->
+<!--            <p th:text="${userAlreadyExist}">Error Message</p>-->
+<!--        </div>-->
         <div class="form-group mt-2"><label><input class="form-control" type="text" name="username" placeholder="Username"
                                               required/> </label></div>
         <div class="form-group mt-2"><label><input class="form-control" type="password" name="password"

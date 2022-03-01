@@ -8,7 +8,14 @@
 <form method="post" th:action="@{/user/addFriend}">
 <!--    <label for="email">Mail</label>-->
     <input type="text" id="email" name="email"  placeholder="Email to add" required>
+
 <button type="submit" class="text-light bg-primary rounded px-4">add connection</button>
 </form>
+    <div th:if="${alreadyInFriendList}" class="alert alert-danger">
+        <p th:text="${alreadyInFriendList}">Error Message</p>
+    </div>
+<div th:if="${userDoesNotExist}">
+    <div th:text="${userDoesNotExist}"></div>
+</div>
 </body>
 </html>

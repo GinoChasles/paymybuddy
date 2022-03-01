@@ -1,5 +1,8 @@
 package com.gino.paymybuddy.service;
 
+import com.gino.paymybuddy.exceptions.UserAlreadyExist;
+import com.gino.paymybuddy.exceptions.UserAlreadyInFriendList;
+import com.gino.paymybuddy.exceptions.UserDoesNotExist;
 import com.gino.paymybuddy.model.Role;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.repository.RoleRepository;
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User insert(final User userParam) throws Exception {
+  public User insert(final User userParam) {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     String encodedPassword = encoder.encode(userParam.getPassword());
     userParam.setPassword(encodedPassword);
@@ -51,7 +54,7 @@ public class UserServiceImpl implements UserService {
       }
       return userRepository.save(userParam);
     } else {
-      throw new Exception("A user with this email is already register !");
+      throw new UserAlreadyExist("A user with this email is already register !");
     }
   }
 
@@ -91,23 +94,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Transactional
-  public void addFriend(final String email, final int id) throws Exception {
+  public void addFriend(final String email, final int id) {
     Optional<User> userOptionalLocal = this.findById(id);
     Optional<User> optionalUserLocal = this.findUserByEmail(email);
 
     if (optionalUserLocal.isPresent()) {
       List<User> friendList = userOptionalLocal.get().getFriends();
-      if (!friendList.contains(optionalUserLocal)) {
+      if (!friendList.contains(optionalUserLocal.get())) {
         friendList.add(optionalUserLocal.get());
         userOptionalLocal.get().setFriends(friendList);
         this.update(id, userOptionalLocal.get());
       } else {
-        throw new Exception("This person is already in you're friend's list !");
+        throw new UserAlreadyInFriendList("This person is already in you're friend's list !");
       }
 
     } else {
-      throw new Exception("This person doesn't exist !");
+      throw new UserDoesNotExist("This person doesn't exist !");
     }
   }
 
