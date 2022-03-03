@@ -53,6 +53,14 @@ public class Account {
     amount = amountParam;
   }
 
+  public Account(final int ibanParam, final String bicParam, final String accountnumberParam,
+                 final double amountParam) {
+    iban = ibanParam;
+    bic = bicParam;
+    accountnumber = accountnumberParam;
+    amount = amountParam;
+  }
+
   public Account() {
 
   }
