@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -129,5 +130,31 @@ public class BankAccountServiceTest {
     bankAccountService.transferToBankAccount(idUser,account.getIdAccount(), amountToTransfer);
     assertThat(user.getAccountBalance()).isEqualTo(userAmountExpected);
     assertThat(account.getAmount()).isEqualTo(accountAmountExpected);
+  }
+
+  @Test
+  public void transferToUserAccount_whenSoldIsSuperiorAccountAmountTest() {
+
+    int idUser = user.getIdUser();
+    double amountToTransfer = account.getAmount() + 50;
+
+    when(bankAccountRepository.findById(1)).thenReturn(Optional.of(account));
+    when(userService.findById(idUser)).thenReturn(Optional.of(user));
+
+
+    assertThrows(Exception.class, () -> bankAccountService.transferToUserAccount(idUser, account.getIdAccount(), amountToTransfer));
+  }
+
+  @Test
+  public void transferToBankAccount_whenSoldIsSuperiorAccountAmountTest() {
+
+    int idUser = user.getIdUser();
+    double amountToTransfer = user.getAccountBalance() + 50;
+
+    when(bankAccountRepository.findById(1)).thenReturn(Optional.of(account));
+    when(userService.findById(idUser)).thenReturn(Optional.of(user));
+
+
+    assertThrows(Exception.class, () -> bankAccountService.transferToBankAccount(idUser, account.getIdAccount(), amountToTransfer));
   }
 }

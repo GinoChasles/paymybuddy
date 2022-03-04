@@ -81,9 +81,10 @@ public class BankAccountServiceImpl implements BankAccountService {
       throws Exception {
     User userLocal = userService.findById(idUser).get();
     Account accountLocal = bankAccountRepository.findById(idAccount).get();
-    double amount = accountLocal.getAmount();
-    if (value <= amount) {
-      accountLocal.setAmount(amount + value);
+    double amountUser = userLocal.getAccountBalance();
+    double amountAccount = accountLocal.getAmount();
+    if (value <= amountUser) {
+      accountLocal.setAmount(amountAccount + value);
       userLocal.setAccountBalance(userLocal.getAccountBalance() - value);
 
       userService.update(idUser, userLocal);
