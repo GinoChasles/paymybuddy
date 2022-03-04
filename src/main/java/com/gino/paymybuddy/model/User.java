@@ -76,6 +76,15 @@ public class User {
   public User() {
   }
 
+  public User(final int idUserParam, final String usernameParam, final String passwordParam,
+              final String emailParam, final double accountBalanceParam) {
+    idUser = idUserParam;
+    username = usernameParam;
+    password = passwordParam;
+    email = emailParam;
+    accountBalance = accountBalanceParam;
+  }
+
   public User(final String usernameParam, final String passwordParam, final String emailParam,
               final double accountBalanceParam) {
     username = usernameParam;

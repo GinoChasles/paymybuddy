@@ -103,8 +103,8 @@ public class UserController {
     }
     int idUserLog = loadingUserLocal.getUserLogId();
     mav.addObject("friendsList", userService.findAllFriendsByIdUserPage(idUserLog, PageRequest.of(page, size)));
-    mav.addObject("alreadyInFriendList");
-    mav.addObject("userDoesNotExist");
+    mav.addObject("alreadyInFriendList", null);
+    mav.addObject("userDoesNotExist", null);
 //    mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
 //    mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
     return mav;
