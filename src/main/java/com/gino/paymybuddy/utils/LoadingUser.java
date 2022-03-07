@@ -5,7 +5,9 @@ import com.gino.paymybuddy.service.UserService;
 import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoadingUser {
   private final UserService userService;
 

@@ -13,14 +13,12 @@ import com.gino.paymybuddy.utils.LoadingUser;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("user")
@@ -30,30 +28,35 @@ public class UserController {
   private final TransactionService transactionService;
   private final BankAccountService bankAccountService;
   private final AppPropertiesExt appPropertiesExt;
+  private final LoadingUser loadingUser;
 
   public UserController(final UserService userServiceParam,
                         final TransactionService transactionServiceParam,
                         final BankAccountService bankAccountServiceParam,
-                        final AppPropertiesExt appPropertiesExtParam) {
+                        final AppPropertiesExt appPropertiesExtParam,
+                        final LoadingUser loadingUserParam) {
     userService = userServiceParam;
     transactionService = transactionServiceParam;
     bankAccountService = bankAccountServiceParam;
     appPropertiesExt = appPropertiesExtParam;
+    loadingUser = loadingUserParam;
   }
 
-  @PostMapping("/addFriend")
-  public ModelAndView saveFriend(@RequestParam(value = "email") String email) {
-    LoadingUser loadingUserLocal = new LoadingUser(userService);
-    ModelAndView mav = new ModelAndView("redirect:/user/contact");
-    try {
+  @PostMapping("/contact")
+  public ModelAndView saveFriend(@RequestParam(value = "email") String email,
+                                 HttpServletRequest request) {
+    final ModelAndView mav = new ModelAndView("/contact");
 
-    userService.addFriend(email, loadingUserLocal.getUserLogId());
-    } catch (UserAlreadyInFriendList|UserDoesNotExist e) {
+    try {
+      userService.addFriend(email, loadingUser.getUserLogId());
+    } catch (UserAlreadyInFriendList e) {
+      mav.addObject("alreadyInFriendList",
+          this.appPropertiesExt.getError().getAlreadyInFriendList());
+    } catch (UserDoesNotExist e) {
       mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
-      mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
     }
 
-    return mav;
+    return getContactInfo(request, mav);
   }
 
   @GetMapping("/profile")
@@ -71,15 +74,14 @@ public class UserController {
       size = Integer.parseInt(request.getParameter("size"));
     }
 
-    LoadingUser loadingUserLocal = new LoadingUser(userService);
-    int idUserLog = loadingUserLocal.getUserLogId();
+    int idUserLog = loadingUser.getUserLogId();
     mav.addObject("accountBalance", userService.findById(idUserLog).get().getAccountBalance());
-    mav.addObject("transactions", transactionService.findAllByEmitterId(idUserLog, PageRequest.of(page, size)));
-    mav.addObject("listBankAccount", bankAccountService.findAllByUserId(idUserLog ));
+    mav.addObject("transactions",
+        transactionService.findAllByEmitterId(idUserLog, PageRequest.of(page, size)));
+    mav.addObject("listBankAccount", bankAccountService.findAllByUserId(idUserLog));
     mav.addObject("addBank", new Account());
     return mav;
   }
-
 
 
   @GetMapping
@@ -90,7 +92,15 @@ public class UserController {
   @GetMapping("/contact")
   public ModelAndView getContact(HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("/contact");
-    LoadingUser loadingUserLocal = new LoadingUser(userService);
+    return getContactInfo(request, mav);
+
+//    mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
+//    mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
+
+  }
+
+  private ModelAndView getContactInfo(HttpServletRequest request, ModelAndView mav) {
+
     int page = Constante.PAGE_NUMBER;
     int size = Constante.PAGE_SIZE;
 
@@ -101,12 +111,10 @@ public class UserController {
     if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
       size = Integer.parseInt(request.getParameter("size"));
     }
-    int idUserLog = loadingUserLocal.getUserLogId();
-    mav.addObject("friendsList", userService.findAllFriendsByIdUserPage(idUserLog, PageRequest.of(page, size)));
-    mav.addObject("alreadyInFriendList", null);
-    mav.addObject("userDoesNotExist", null);
-//    mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
-//    mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
+    int idUserLog = loadingUser.getUserLogId();
+    mav.addObject("friendsList",
+        userService.findAllFriendsByIdUserPage(idUserLog, PageRequest.of(page, size)));
+
     return mav;
   }
 }
