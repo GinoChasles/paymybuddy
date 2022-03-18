@@ -1,6 +1,5 @@
 package com.gino.paymybuddy.service;
 
-import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.model.Enterprise;
 import com.gino.paymybuddy.repository.EnterpriseRepository;
 import java.util.Optional;
@@ -13,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,24 +57,27 @@ public class EnterpriseServiceTest {
   @Test
   public void deleteTest() {
     ArgumentCaptor<Enterprise> argumentCaptor = ArgumentCaptor.forClass(Enterprise.class);
-    Optional<Enterprise> optionalEnterpriseLocal = enterpriseRepository.findById(enterprise.getIdEnterprise());
-    Enterprise enterpriseLocal;
-    if(optionalEnterpriseLocal.isPresent()) {
-      enterpriseLocal = optionalEnterpriseLocal.get();
-      enterpriseService.delete(enterpriseLocal.getIdEnterprise());
+    when(enterpriseRepository.findById(anyInt())).thenReturn(Optional.ofNullable(enterprise));
+
+      enterpriseService.delete(enterprise.getIdEnterprise());
       Mockito.verify(enterpriseRepository, Mockito.times(1)).delete(argumentCaptor.capture());
-    }
+
   }
 
   @Test
   public void updateTest() {
-    Optional<Enterprise> optionalEnterpriseLocal = enterpriseRepository.findById(enterprise.getIdEnterprise());
-    Enterprise enterpriseLocal;
-    if(optionalEnterpriseLocal.isPresent()) {
-      enterpriseLocal = optionalEnterpriseLocal.get();
+    when(enterpriseRepository.findById(anyInt())).thenReturn(Optional.ofNullable(enterprise));
+    Enterprise enterpriseLocal = enterprise;
       enterpriseLocal.setName("nouveauName");
-      when(enterpriseService.update(enterprise.getIdEnterprise(), enterpriseLocal)).thenReturn(enterprise);
+      enterpriseService.update(enterprise.getIdEnterprise(), enterpriseLocal);
       assertThat(enterprise.getName()).isEqualTo("nouveauName");
-    }
+  }
+
+  @Test
+  public void updateTest_whenEnterpriseIsNull() {
+    when(enterpriseRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+    Enterprise enterpriseLocal = enterpriseService.update(enterprise.getIdEnterprise(), enterprise);
+    assertThat(enterpriseLocal).isNull();
   }
 }

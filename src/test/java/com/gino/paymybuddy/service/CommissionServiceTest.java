@@ -17,6 +17,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,27 +70,31 @@ public class CommissionServiceTest {
   @Test
   public void deleteTest() {
     ArgumentCaptor<Commission> argumentCaptor = ArgumentCaptor.forClass(Commission.class);
-    Optional<Commission> optionalCommissionLocal = commissionRepository.findById(commission1.getIdCommission());
-    Commission commissionLocal;
-    if(optionalCommissionLocal.isPresent()) {
-      commissionLocal = optionalCommissionLocal.get();
-      commissionService.delete(commissionLocal.getIdCommission());
+    when(commissionRepository.findById(anyInt())).thenReturn(
+        Optional.of(commission1));
+
+      commissionService.delete(commission1.getIdCommission());
       Mockito.verify(commissionRepository, Mockito.times(1)).delete(argumentCaptor.capture());
-    }
+
+  }
+
+  @Test
+  public void updateTest_NotPresent() {
+    when(commissionRepository.findById(anyInt())).thenReturn(Optional.empty());
+    Commission commissionLocal = commissionService.update(commission1.getIdCommission(), commission1);
+      assertThat(commissionLocal).isNull();
   }
 
   @Test
   public void updateTest() {
-    Optional<Commission> optionalCommissionLocal = commissionRepository.findById(commission1.getIdCommission());
-    Commission commissionLocal;
-    if(optionalCommissionLocal.isPresent()) {
-      commissionLocal = optionalCommissionLocal.get();
-      commissionLocal.setPourcentage(1);
-      when(commissionService.update(commission1.getIdCommission(), commissionLocal)).thenReturn(commission1);
-      assertThat(commission1.getPourcentage()).isEqualTo(1);
-    }
-  }
+    when(commissionRepository.findById(commission1.getIdCommission())).thenReturn(Optional.of(commission1));
+    Commission commissionLocal = commission1;
 
+      commissionLocal.setPourcentage(1);
+      commissionService.update(commission1.getIdCommission(), commissionLocal);
+      assertThat(commission1.getPourcentage()).isEqualTo(1);
+
+  }
   @Test
   public void getTotalCommissionForEnterpriseTest() {
     double expected = commission1.getCommisssionCount() + commission2.getCommisssionCount();

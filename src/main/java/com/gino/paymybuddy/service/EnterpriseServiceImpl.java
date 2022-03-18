@@ -41,6 +41,8 @@ public class EnterpriseServiceImpl implements EnterpriseService{
 
   @Override
   public void delete(final int id) {
-    enterpriseRepository.deleteById(id);
+
+    Optional<Enterprise> enterpriseLocal = this.findById(id);
+    enterpriseLocal.ifPresent(enterpriseRepository::delete);
   }
 }

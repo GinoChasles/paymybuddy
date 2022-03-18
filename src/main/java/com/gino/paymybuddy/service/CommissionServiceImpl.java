@@ -28,7 +28,8 @@ public class CommissionServiceImpl implements CommissionService{
 
   @Override
   public void delete(final int id) {
-      commissionRepository.deleteById(id);
+    Optional<Commission> commissionLocal = this.findById(id);
+    commissionLocal.ifPresent(commissionRepository::delete);
   }
 
   @Override

@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 public class RoleServiceImpl implements RoleService {
 
   private final RoleRepository repository;
-  private final UserService userService;
 
-  public RoleServiceImpl(final RoleRepository repositoryParam,
-                         final UserService userServiceParam) {
+  public RoleServiceImpl(final RoleRepository repositoryParam) {
     repository = repositoryParam;
-    userService = userServiceParam;
   }
 
 
@@ -32,10 +29,7 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public void delete(final int id) {
     Optional<Role> optionalRoleLocal = this.findById(id);
-    if (optionalRoleLocal.isPresent()) {
-      Role roleLocal = optionalRoleLocal.get();
-      repository.delete(roleLocal);
-    }
+    optionalRoleLocal.ifPresent(repository::delete);
   }
 
   @Override

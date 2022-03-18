@@ -165,12 +165,13 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
-<!--				<configuration>-->
-<!--					<excludes>-->
-<!--						<exclude>com/safety/safetynet/model/**/</exclude>-->
-<!--						<exclude>com/safety/safetynet/dto/**/</exclude>-->
-<!--					</excludes>-->
-<!--				</configuration>-->
+				<configuration>
+					<excludes>
+						<exclude>com/gino/paymybuddy/model/**/</exclude>
+						<exclude>com/gino/paymybuddy/dto/**/</exclude>
+						<exclude>com/gino/paymybuddy/utils/**/</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

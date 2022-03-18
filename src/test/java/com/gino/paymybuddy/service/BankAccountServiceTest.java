@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,25 +67,31 @@ public class BankAccountServiceTest {
   @Test
   public void deleteTest() {
     ArgumentCaptor<Account> argumentCaptor = ArgumentCaptor.forClass(Account.class);
-    Optional<Account> optionalAccountLocal = bankAccountRepository.findById(account.getIdAccount());
-    Account accountLocal;
-    if(optionalAccountLocal.isPresent()) {
-      accountLocal = optionalAccountLocal.get();
-      bankAccountService.delete(accountLocal.getIdAccount());
+    when(bankAccountRepository.findById(anyInt())).thenReturn(Optional.ofNullable(account));
+
+      bankAccountService.delete(account.getIdAccount());
       Mockito.verify(bankAccountRepository, Mockito.times(1)).delete(argumentCaptor.capture());
-    }
+
   }
 
   @Test
   public void updateTest() {
-    Optional<Account> optionalAccountLocal = bankAccountRepository.findById(account.getIdAccount());
-    Account accountLocal;
-    if(optionalAccountLocal.isPresent()) {
-      accountLocal = optionalAccountLocal.get();
+    when(bankAccountRepository.findById(anyInt())).thenReturn(
+        Optional.ofNullable(account));
+    Account accountLocal = account;
       accountLocal.setAccountnumber("nouveauTest");
-      when(bankAccountService.update(account.getIdAccount(), accountLocal)).thenReturn(account);
+      bankAccountService.update(account.getIdAccount(), accountLocal);
       assertThat(account.getAccountnumber()).isEqualTo("nouveauTest");
-    }
+
+  }
+
+  @Test
+  public void updateTest_whenAccountDoesNotExist() {
+    when(bankAccountRepository.findById(anyInt())).thenReturn(
+        Optional.empty());
+    Account accountLocal = bankAccountService.update(account.getIdAccount(), account);
+    assertThat(accountLocal).isNull();
+
   }
 
   @Test

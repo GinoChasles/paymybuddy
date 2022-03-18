@@ -34,7 +34,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 
   @Override
   public void delete(final int id) {
-    bankAccountRepository.deleteById(id);
+
+    Optional<Account> accountLocal = this.findById(id);
+    accountLocal.ifPresent(bankAccountRepository::delete);
   }
 
   @Override

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = PaymybuddyApplication.class)
 @AutoConfigureMockMvc
-public class BankAccountControllerTest {
+public class BankAccountControllerIT {
   @Autowired
   MockMvc mockMvc;
 

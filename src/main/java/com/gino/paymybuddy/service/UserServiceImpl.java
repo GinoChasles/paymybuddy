@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
     Optional<User> userOptionalLocal = this.findUserByEmail(userParam.getEmail());
     if (userOptionalLocal.isEmpty()) {
       if (roleUser.isPresent()) {
-        Role roleLocal = roleUser.get();
         List<Role> roleListLocal = userParam.getRoles();
-        roleListLocal.add(roleLocal);
+        roleListLocal.add(roleUser.get());
+        userParam.setRoles(roleListLocal);
         return userRepository.save(userParam);
       }
       return userRepository.save(userParam);
@@ -74,13 +74,14 @@ public class UserServiceImpl implements UserService {
       userLocal.setRoles(userParam.getRoles());
       return userRepository.save(userLocal);
     } else {
-      return null;
+      throw new UserDoesNotExist("user doesn't exist");
     }
   }
 
   @Override
   public void delete(final int id) {
-    userRepository.deleteById(id);
+    Optional<User> optionalUserLocal = this.findById(id);
+    optionalUserLocal.ifPresent(userRepository::delete);
   }
 
   @Override
