@@ -23,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -172,7 +171,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void createTransactionTest_whenMissingOneUser() {
+  public void createTransactionTest_whenMissingTwoUser() {
     when(userService.findUserByEmail(anyString())).thenReturn(Optional.empty());
     when(userService.findById(anyInt())).thenReturn(Optional.empty());
 
@@ -180,5 +179,22 @@ public class TransactionServiceTest {
 
     assertThat(test).isNull();
   }
+  @Test
+  public void createTransactionTest_whenMissingOneUser() {
+    when(userService.findUserByEmail(anyString())).thenReturn(Optional.empty());
+    when(userService.findById(anyInt())).thenReturn(Optional.of(user2));
 
+    Transaction test = transactionService.createTransaction(user1.getIdUser(), user2.getEmail(), transaction1Emit.getDescription(), transaction1Emit.getAmount());
+
+    assertThat(test).isNull();
+  }
+  @Test
+  public void createTransactionTest_whenMissingEmitterUser() {
+    when(userService.findUserByEmail(anyString())).thenReturn(Optional.of(user1));
+    when(userService.findById(anyInt())).thenReturn(Optional.empty());
+
+    Transaction test = transactionService.createTransaction(user1.getIdUser(), user2.getEmail(), transaction1Emit.getDescription(), transaction1Emit.getAmount());
+
+    assertThat(test).isNull();
+  }
 }

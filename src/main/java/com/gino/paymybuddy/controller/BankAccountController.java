@@ -4,7 +4,6 @@ import com.gino.paymybuddy.model.Account;
 import com.gino.paymybuddy.service.BankAccountService;
 import com.gino.paymybuddy.service.UserService;
 import com.gino.paymybuddy.utils.LoadingUser;
-import java.util.Optional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,29 +18,30 @@ import org.springframework.web.servlet.ModelAndView;
 public class BankAccountController {
   final private BankAccountService bankAccountService;
   final private UserService userService;
+  final private LoadingUser loadingUser;
 
   public BankAccountController(
       final BankAccountService bankAccountServiceParam,
-      final UserService userServiceParam) {
+      final UserService userServiceParam,
+      final LoadingUser loadingUserParam) {
     bankAccountService = bankAccountServiceParam;
     userService = userServiceParam;
+    loadingUser = loadingUserParam;
   }
 
-  @PostMapping("/{id}")
+  @DeleteMapping("/{id}")
   public ModelAndView deleteBankAccount(@PathVariable(value = "id") final int id) {
     ModelAndView mav = new ModelAndView("redirect:/user/profile");
-    Optional<Account> optionalAccountLocal = bankAccountService.findById(id);
-    if (optionalAccountLocal.isPresent()) {
+
       bankAccountService.delete(id);
-    }
+
     return mav;
   }
 
   @PostMapping
-  public ModelAndView addBankAccount(@ModelAttribute Account accountParam) {
+  public ModelAndView addBankAccount(@ModelAttribute("bancAccount") Account accountParam) {
     ModelAndView mav = new ModelAndView("redirect:/user/profile");
-    LoadingUser loadingUserLocal = new LoadingUser(userService);
-    int idUserLog = loadingUserLocal.getUserLogId();
+    int idUserLog = loadingUser.getUserLogId();
     accountParam.setUser(userService.findById(idUserLog).get());
     bankAccountService.insert(accountParam);
     mav.addObject("addBank", accountParam);
