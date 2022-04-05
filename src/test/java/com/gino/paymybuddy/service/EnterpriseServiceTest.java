@@ -15,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Enterprise service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class EnterpriseServiceTest {
 
@@ -24,13 +27,19 @@ public class EnterpriseServiceTest {
   @Mock
   private EnterpriseRepository enterpriseRepository;
 
-  private static Enterprise enterprise;
+  private Enterprise enterprise;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     enterprise = new Enterprise("name", "siret");
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(enterpriseRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(enterprise));
@@ -45,6 +54,9 @@ public class EnterpriseServiceTest {
     Mockito.verify(enterpriseRepository, Mockito.times(1)).findById(Mockito.anyInt());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(enterpriseRepository.save(Mockito.any(Enterprise.class))).thenReturn(enterprise);
@@ -54,6 +66,9 @@ public class EnterpriseServiceTest {
     assertThat(enterpriseLocal.getName()).isEqualTo("name");
   }
 
+  /**
+   * Delete test.
+   */
   @Test
   public void deleteTest() {
     ArgumentCaptor<Enterprise> argumentCaptor = ArgumentCaptor.forClass(Enterprise.class);
@@ -64,6 +79,9 @@ public class EnterpriseServiceTest {
 
   }
 
+  /**
+   * Update test.
+   */
   @Test
   public void updateTest() {
     when(enterpriseRepository.findById(anyInt())).thenReturn(Optional.ofNullable(enterprise));
@@ -73,6 +91,9 @@ public class EnterpriseServiceTest {
       assertThat(enterprise.getName()).isEqualTo("nouveauName");
   }
 
+  /**
+   * Update test when enterprise is null.
+   */
   @Test
   public void updateTest_whenEnterpriseIsNull() {
     when(enterpriseRepository.findById(anyInt())).thenReturn(Optional.empty());

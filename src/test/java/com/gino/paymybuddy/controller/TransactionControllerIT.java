@@ -2,54 +2,80 @@ package com.gino.paymybuddy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gino.paymybuddy.PaymybuddyApplication;
-import com.gino.paymybuddy.dto.TransactionDTO;
 import com.gino.paymybuddy.service.TransactionServiceImpl;
-import javax.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+/**
+ * The type Transaction controller it.
+ */
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:beforeTestRun.sql")
 @SpringBootTest(classes = PaymybuddyApplication.class)
 @AutoConfigureMockMvc
 public class TransactionControllerIT {
 
-  @Inject
+  /**
+   * The Mock mvc.
+   */
+  @Autowired
   MockMvc mockMvc;
 
+  /**
+   * The Mapper.
+   */
   @Autowired
   ObjectMapper mapper;
 
-  @Mock
+  /**
+   * The Transaction service.
+   */
+  @Autowired
   TransactionServiceImpl transactionService;
 
+  /**
+   * Gets transactions test.
+   *
+   * @throws Exception the exception
+   */
   @Test
   public void getTransactionsTest() throws Exception {
   mockMvc.perform(get("/transfer")
       .with(user("email@teste.com").password("testtest").roles("USER"))
       )
       .andExpect(status().isOk())
-      .andExpect(view().name("transfer"));
+      .andExpect(view().name("transfer"))
+      .andExpect(MockMvcResultMatchers.model()
+          .attributeExists("transactions", "amountMax", "friendList", "postTransaction"));
+    ;
   }
 
+  /**
+   * Save transaction test.
+   *
+   * @throws Exception the exception
+   */
   @Test
-
   public void saveTransactionTest() throws Exception {
-    String json = mapper.writeValueAsString(new TransactionDTO());
     mockMvc.perform(post("/transfer/saveTransaction")
         .with(user("email@teste.com").password("testtest").roles("USER"))
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(json))
-        .andExpect(view().name("redirect:/transfer"));
+        .contentType( MediaType.parseMediaType("application/x-www-form-urlencoded"))
+            .param("connection", "email2@teste.com")
+            .param("amount", "10")
+            .param("description", "testDBtest")
+        )
+        .andExpect(view().name("redirect:/transfer"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("postTransaction"));
   }
+
 }

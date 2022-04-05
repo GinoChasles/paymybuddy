@@ -1,8 +1,16 @@
 package com.gino.paymybuddy.exceptions;
 
-public class UserAlreadyInFriendList extends RuntimeException{
+/**
+ * The type User already in friend list.
+ */
+public class UserAlreadyInFriendList extends RuntimeException {
 
-  public UserAlreadyInFriendList(String s) {
+  /**
+   * Instantiates a new User already in friend list.
+   *
+   * @param s the s
+   */
+  public UserAlreadyInFriendList(final String s) {
     super(s);
   }
 }

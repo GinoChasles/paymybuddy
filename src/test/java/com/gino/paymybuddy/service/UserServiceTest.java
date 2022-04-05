@@ -4,7 +4,6 @@ import com.gino.paymybuddy.exceptions.UserAlreadyExist;
 import com.gino.paymybuddy.exceptions.UserAlreadyInFriendList;
 import com.gino.paymybuddy.exceptions.UserDoesNotExist;
 import com.gino.paymybuddy.model.Role;
-import com.gino.paymybuddy.model.Transaction;
 import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.repository.RoleRepository;
 import com.gino.paymybuddy.repository.UserRepository;
@@ -32,8 +31,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type User service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -46,14 +47,17 @@ public class UserServiceTest {
   @Mock
   private RoleRepository roleRepository;
 
-  private static User user1;
-  private static User user2;
-  private static User user3;
+  private User user1;
+  private User user2;
+  private User user3;
   private static List<User> userList = new ArrayList<>();
   private static List<User> user1FriendList = new ArrayList<>();
   private static Role roleUser1;
 
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     user1 = new User(1,"username1", "password", "username1@gmail.com", 50);
@@ -67,6 +71,9 @@ public class UserServiceTest {
     roleUser1 = new Role("ROLE_USER", "userRole");
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(userRepository.findById(anyInt())).thenReturn(Optional.of(user1));
@@ -81,6 +88,9 @@ public class UserServiceTest {
     verify(userRepository, times(1)).findById(anyInt());
   }
 
+  /**
+   * Find user by email test.
+   */
   @Test
   public void findUserByEmailTest() {
     when(userRepository.findUserByEmail(anyString())).thenReturn(Optional.of(user1));
@@ -96,6 +106,9 @@ public class UserServiceTest {
     verify(userRepository, times(1)).findUserByEmail(anyString());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(roleRepository.findById(anyInt())).thenReturn(Optional.ofNullable(roleUser1));
@@ -108,6 +121,9 @@ public class UserServiceTest {
     assertThat(userLocal.getRoles().get(0).getRole()).isEqualTo(roleUser1.getRole());
   }
 
+  /**
+   * Insert test user already exist.
+   */
   @Test
   public void insertTest_UserAlreadyExist() {
     when(roleRepository.findById(anyInt())).thenReturn(Optional.ofNullable(roleUser1));
@@ -116,6 +132,9 @@ public class UserServiceTest {
     assertThrows(UserAlreadyExist.class,() -> userService.insert(user1));
   }
 
+  /**
+   * Insert test when user role is not present.
+   */
   @Test
   public void insertTest_whenUserRoleIsNotPresent() {
     when(userRepository.save(any(User.class))).thenReturn(user1);
@@ -128,6 +147,10 @@ public class UserServiceTest {
     assertThat(userLocal.getRoles().size()).isEqualTo(0);
 
   }
+
+  /**
+   * Update test.
+   */
   @Test
   public void updateTest() {
     when(userRepository.findById(anyInt())).thenReturn(Optional.ofNullable(user1));
@@ -138,6 +161,9 @@ public class UserServiceTest {
 
   }
 
+  /**
+   * Update test when user does not exist.
+   */
   @Test
   public void updateTest_whenUserDoesNotExist() {
     when(userService.findById(anyInt())).thenReturn(Optional.empty());
@@ -146,6 +172,9 @@ public class UserServiceTest {
 
   }
 
+  /**
+   * Delete test.
+   */
   @Test
   public void deleteTest() {
     ArgumentCaptor<User> argumentCaptorLocal = ArgumentCaptor.forClass(User.class);
@@ -156,6 +185,9 @@ public class UserServiceTest {
 
   }
 
+  /**
+   * Find all friends by id user test.
+   */
   @Test
   public void findAllFriendsByIdUserTest() {
     when(userRepository.findFriends(user1.getIdUser())).thenReturn(user1FriendList);
@@ -164,6 +196,9 @@ public class UserServiceTest {
     assertThat(userListTest.get(0).getUsername()).isEqualTo(user1FriendList.get(0).getUsername());
   }
 
+  /**
+   * Find all friends by id user page test.
+   */
   @Test
   public void findAllFriendsByIdUserPageTest() {
     Pageable paging = PageRequest.of(0, 2);
@@ -174,6 +209,9 @@ public class UserServiceTest {
     assertThat(userPageTest.get().findFirst().get().getUsername()).isEqualTo("username2");
   }
 
+  /**
+   * Add friend test.
+   */
   @Test
   public void addFriendTest() {
     when(userService.findById(anyInt())).thenReturn(Optional.of(user2));
@@ -184,6 +222,9 @@ public class UserServiceTest {
     assertThat(user2.getFriends().size()).isEqualTo(1);
   }
 
+  /**
+   * Find all test.
+   */
   @Test
   public void findAllTest() {
     when(userRepository.findAll()).thenReturn(userList);
@@ -192,6 +233,9 @@ public class UserServiceTest {
     assertThat(userListLocal.size()).isEqualTo(userList.size());
   }
 
+  /**
+   * Add friend test when friend already exist.
+   */
   @Test
   public void addFriendTest_whenFriendAlreadyExist() {
     user1.setFriends(user1FriendList);
@@ -201,6 +245,10 @@ public class UserServiceTest {
 
     assertThrows(UserAlreadyInFriendList.class, () -> userService.addFriend(user2.getEmail(), user1.getIdUser()));
   }
+
+  /**
+   * Add friend test when friend does not exist.
+   */
   @Test
   public void addFriendTest_whenFriendDoesNotExist() {
     when(userService.findById(anyInt())).thenReturn(Optional.of(user2));

@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Bank account service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class BankAccountServiceTest {
 
@@ -31,16 +34,22 @@ public class BankAccountServiceTest {
   @Mock
   private UserService userService;
 
-  private static Account account;
-  private static List<Account> accountList = new ArrayList<>();
-  private static User user;
+  private Account account;
+  private List<Account> accountList = new ArrayList<>();
+  private User user;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     account = new Account(1, 12345, "test", "testtest", 1000);
     user = new User("userTest", "userPassword", "user@gmail.com", 100);
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(bankAccountRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(account));
@@ -55,6 +64,9 @@ public class BankAccountServiceTest {
     Mockito.verify(bankAccountRepository, Mockito.times(1)).findById(Mockito.anyInt());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(bankAccountRepository.save(Mockito.any(Account.class))).thenReturn(account);
@@ -64,6 +76,9 @@ public class BankAccountServiceTest {
     assertThat(accountTest.getAccountnumber()).isEqualTo("testtest");
   }
 
+  /**
+   * Delete test.
+   */
   @Test
   public void deleteTest() {
     ArgumentCaptor<Account> argumentCaptor = ArgumentCaptor.forClass(Account.class);
@@ -74,6 +89,9 @@ public class BankAccountServiceTest {
 
   }
 
+  /**
+   * Update test.
+   */
   @Test
   public void updateTest() {
     when(bankAccountRepository.findById(anyInt())).thenReturn(
@@ -85,6 +103,9 @@ public class BankAccountServiceTest {
 
   }
 
+  /**
+   * Update test when account does not exist.
+   */
   @Test
   public void updateTest_whenAccountDoesNotExist() {
     when(bankAccountRepository.findById(anyInt())).thenReturn(
@@ -94,6 +115,9 @@ public class BankAccountServiceTest {
 
   }
 
+  /**
+   * Find all by user id test.
+   */
   @Test
   public void findAllByUserIdTest() {
     Account accountLocal = new Account(54321,"test2", "test2", 2000);
@@ -107,6 +131,11 @@ public class BankAccountServiceTest {
     assertThat(accountsLocal.get(1).getAccountnumber()).isEqualTo(accountList.get(1).getAccountnumber());
   }
 
+  /**
+   * Transfer to user account test.
+   *
+   * @throws Exception the exception
+   */
   @Test
   public void transferToUserAccountTest() throws Exception {
     int idUser = user.getIdUser();
@@ -124,6 +153,11 @@ public class BankAccountServiceTest {
   }
 
 
+  /**
+   * Transfer to bank account test.
+   *
+   * @throws Exception the exception
+   */
   @Test
   public void transferToBankAccountTest() throws Exception {
     int idUser = user.getIdUser();
@@ -139,6 +173,9 @@ public class BankAccountServiceTest {
     assertThat(account.getAmount()).isEqualTo(accountAmountExpected);
   }
 
+  /**
+   * Transfer to user account when sold is superior account amount test.
+   */
   @Test
   public void transferToUserAccount_whenSoldIsSuperiorAccountAmountTest() {
 
@@ -152,6 +189,9 @@ public class BankAccountServiceTest {
     assertThrows(Exception.class, () -> bankAccountService.transferToUserAccount(idUser, account.getIdAccount(), amountToTransfer));
   }
 
+  /**
+   * Transfer to bank account when sold is superior account amount test.
+   */
   @Test
   public void transferToBankAccount_whenSoldIsSuperiorAccountAmountTest() {
 

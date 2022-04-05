@@ -6,11 +6,19 @@ import com.gino.paymybuddy.repository.RoleRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Role service.
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
 
   private final RoleRepository repository;
 
+  /**
+   * Instantiates a new Role service.
+   *
+   * @param repositoryParam the repository param
+   */
   public RoleServiceImpl(final RoleRepository repositoryParam) {
     repository = repositoryParam;
   }

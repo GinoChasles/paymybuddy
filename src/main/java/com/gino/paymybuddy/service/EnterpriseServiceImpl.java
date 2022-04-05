@@ -5,11 +5,19 @@ import com.gino.paymybuddy.repository.EnterpriseRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Enterprise service.
+ */
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService{
 
   private final EnterpriseRepository enterpriseRepository;
 
+  /**
+   * Instantiates a new Enterprise service.
+   *
+   * @param enterpriseRepositoryParam the enterprise repository param
+   */
   public EnterpriseServiceImpl(
       final EnterpriseRepository enterpriseRepositoryParam) {
     enterpriseRepository = enterpriseRepositoryParam;

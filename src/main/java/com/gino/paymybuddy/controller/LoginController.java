@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * The type Login controller.
+ */
 @RestController
 public class LoginController {
 
@@ -19,6 +22,12 @@ public class LoginController {
   private final AppPropertiesExt appPropertiesExt;
 
 
+  /**
+   * Instantiates a new Login controller.
+   *
+   * @param userServiceParam      the user service param
+   * @param appPropertiesExtParam the app properties ext param
+   */
   public LoginController(final UserService userServiceParam,
                          final AppPropertiesExt appPropertiesExtParam) {
     userService = userServiceParam;
@@ -26,14 +35,25 @@ public class LoginController {
   }
 
 
+  /**
+   * Gets admin.
+   *
+   * @return the admin
+   */
   @RequestMapping("/admin")
   @RolesAllowed("ADMIN")
   public String getAdmin() {
     return "Admin !";
   }
 
+  /**
+   * Gets transactions.
+   *
+   * @param userParam the user param
+   * @return the transactions
+   */
   @GetMapping("/home")
-  public ModelAndView getTransactions(User userParam) {
+  public ModelAndView getTransactions(final User userParam) {
     ModelAndView mav = new ModelAndView("home");
     LoadingUser loadingUserLocal = new LoadingUser(userService);
 
@@ -45,34 +65,27 @@ public class LoginController {
   }
 
 
+  /**
+   * Gets register.
+   *
+   * @return the register
+   */
   @GetMapping("/register")
   public ModelAndView getRegister() {
     ModelAndView mav = new ModelAndView("register");
-//    mav.addObject("userAlreadyExist");
     return mav;
   }
 
+  /**
+   * Register model and view.
+   *
+   * @param userParam the user param
+   * @return the model and view
+   */
   @PostMapping("/register")
-  public ModelAndView register(@Valid final User userParam){
+  public ModelAndView register(@Valid final User userParam) {
     ModelAndView mav = new ModelAndView("login");
-//try {
-
     userService.insert(userParam);
-//} catch (Exception e) {
-//  mav.addObject("userAlreadyExist", this.appPropertiesExt.getError().getUserAlreadyExist());
-//  mav.setViewName("redirect:/register");
-//}
     return mav;
   }
-//  @RequestMapping(value="/logout", method = RequestMethod.GET)
-//  public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//    if (auth != null){
-//      new SecurityContextLogoutHandler().logout(request, response, auth);
-////      logger.info("logout ok");
-//    }
-//    return "login";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
-//  }
-
-
 }

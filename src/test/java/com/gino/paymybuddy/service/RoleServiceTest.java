@@ -20,6 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
+/**
+ * The type Role service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class RoleServiceTest {
   @InjectMocks
@@ -29,11 +32,17 @@ public class RoleServiceTest {
 
   private Role role;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     role = new Role("ROLE_USER", "user role");
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(roleRepository.findById(anyInt())).thenReturn(Optional.of(role));
@@ -48,6 +57,9 @@ public class RoleServiceTest {
     verify(roleRepository, times(1)).findById(anyInt());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(roleRepository.save(any(Role.class))).thenReturn(role);
@@ -57,6 +69,9 @@ public class RoleServiceTest {
     assertThat(roleTest.getDescription()).isEqualTo(role.getDescription());
   }
 
+  /**
+   * Delete test.
+   */
   @Test
   public void deleteTest() {
     ArgumentCaptor<Role> argumentCaptor = ArgumentCaptor.forClass(Role.class);
@@ -66,6 +81,9 @@ public class RoleServiceTest {
     verify(roleRepository, times(1)).delete(argumentCaptor.capture());
   }
 
+  /**
+   * Update test.
+   */
   @Test
   public void updateTest() {
     when(roleRepository.findById(anyInt())).thenReturn(Optional.of(role));
@@ -77,6 +95,9 @@ public class RoleServiceTest {
     assertThat(roleTest.getDescription()).isEqualTo(role.getDescription());
   }
 
+  /**
+   * Update test when role is null.
+   */
   @Test
   public void updateTest_whenRoleIsNull() {
     when(roleRepository.findById(anyInt())).thenReturn(Optional.empty());

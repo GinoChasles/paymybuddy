@@ -16,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+/**
+ * The type Custom user details service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class CustomUserDetailsServiceTest {
 
@@ -27,12 +30,18 @@ public class CustomUserDetailsServiceTest {
 
   private User user;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   public void setUp() {
     user = new User(1,"username1", "password", "username1@gmail.com", 50);
 
   }
 
+  /**
+   * Load user by username test.
+   */
   @Test
   public void loadUserByUsernameTest() {
     when(userRepository.findUserByEmail(user.getEmail())).thenReturn(
@@ -44,6 +53,9 @@ public class CustomUserDetailsServiceTest {
     assertThat(userDetailsLocal.getUsername()).isEqualTo(user.getEmail());
   }
 
+  /**
+   * Load user by username test when user does not exist.
+   */
   @Test
   public void loadUserByUsernameTest_whenUserDoesNotExist() {
 

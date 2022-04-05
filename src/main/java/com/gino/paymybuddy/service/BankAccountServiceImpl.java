@@ -8,12 +8,21 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Bank account service.
+ */
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
 
   private final BankAccountRepository bankAccountRepository;
   private final UserService userService;
 
+  /**
+   * Instantiates a new Bank account service.
+   *
+   * @param bankAccountRepositoryParam the bank account repository param
+   * @param userServiceParam           the user service param
+   */
   public BankAccountServiceImpl(
       final BankAccountRepository bankAccountRepositoryParam,
       final UserService userServiceParam) {

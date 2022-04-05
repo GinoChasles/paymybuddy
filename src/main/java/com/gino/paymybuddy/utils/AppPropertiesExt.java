@@ -2,45 +2,91 @@ package com.gino.paymybuddy.utils;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * The type App properties ext.
+ */
 @ConfigurationProperties(prefix = "app")
 public class AppPropertiesExt {
     private Error error;
 
-    public static class Error {
+  /**
+   * The type Error.
+   */
+  public static class Error {
       private String alreadyInFriendList;
       private String userDoesNotExist;
       private String userAlreadyExist;
 
 
-      public String getUserAlreadyExist() {
+    /**
+     * Gets user already exist.
+     *
+     * @return the user already exist
+     */
+    public String getUserAlreadyExist() {
         return userAlreadyExist;
       }
 
-      public void setUserAlreadyExist(final String userAlreadyExistParam) {
+    /**
+     * Sets user already exist.
+     *
+     * @param userAlreadyExistParam the user already exist param
+     */
+    public void setUserAlreadyExist(final String userAlreadyExistParam) {
         userAlreadyExist = userAlreadyExistParam;
       }
 
-      public String getUserDoesNotExist() {
+    /**
+     * Gets user does not exist.
+     *
+     * @return the user does not exist
+     */
+    public String getUserDoesNotExist() {
         return userDoesNotExist;
       }
 
-      public void setUserDoesNotExist(final String userDoesNotExistParam) {
+    /**
+     * Sets user does not exist.
+     *
+     * @param userDoesNotExistParam the user does not exist param
+     */
+    public void setUserDoesNotExist(final String userDoesNotExistParam) {
         userDoesNotExist = userDoesNotExistParam;
       }
 
-      public String getAlreadyInFriendList() {
+    /**
+     * Gets already in friend list.
+     *
+     * @return the already in friend list
+     */
+    public String getAlreadyInFriendList() {
         return alreadyInFriendList;
       }
 
-      public void setAlreadyInFriendList(final String alreadyInFriendListParam) {
+    /**
+     * Sets already in friend list.
+     *
+     * @param alreadyInFriendListParam the already in friend list param
+     */
+    public void setAlreadyInFriendList(final String alreadyInFriendListParam) {
         alreadyInFriendList = alreadyInFriendListParam;
       }
     }
 
+  /**
+   * Gets error.
+   *
+   * @return the error
+   */
   public Error getError() {
     return error;
   }
 
+  /**
+   * Sets error.
+   *
+   * @param errorParam the error param
+   */
   public void setError(final Error errorParam) {
     error = errorParam;
   }

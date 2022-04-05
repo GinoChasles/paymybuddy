@@ -3,14 +3,12 @@ package com.gino.paymybuddy.controller;
 import com.gino.paymybuddy.exceptions.UserAlreadyInFriendList;
 import com.gino.paymybuddy.exceptions.UserDoesNotExist;
 import com.gino.paymybuddy.model.Account;
-import com.gino.paymybuddy.model.User;
 import com.gino.paymybuddy.service.BankAccountService;
 import com.gino.paymybuddy.service.TransactionService;
 import com.gino.paymybuddy.service.UserService;
 import com.gino.paymybuddy.utils.AppPropertiesExt;
 import com.gino.paymybuddy.utils.Constante;
 import com.gino.paymybuddy.utils.LoadingUser;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * The type User controller.
+ */
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -30,6 +31,15 @@ public class UserController {
   private final AppPropertiesExt appPropertiesExt;
   private final LoadingUser loadingUser;
 
+  /**
+   * Instantiates a new User controller.
+   *
+   * @param userServiceParam        the user service param
+   * @param transactionServiceParam the transaction service param
+   * @param bankAccountServiceParam the bank account service param
+   * @param appPropertiesExtParam   the app properties ext param
+   * @param loadingUserParam        the loading user param
+   */
   public UserController(final UserService userServiceParam,
                         final TransactionService transactionServiceParam,
                         final BankAccountService bankAccountServiceParam,
@@ -42,9 +52,16 @@ public class UserController {
     loadingUser = loadingUserParam;
   }
 
+  /**
+   * Save friend model and view.
+   *
+   * @param email   the email
+   * @param request the request
+   * @return the model and view
+   */
   @PostMapping("/contact")
-  public ModelAndView saveFriend(@RequestParam(value = "email") String email,
-                                 HttpServletRequest request) {
+  public ModelAndView saveFriend(@RequestParam(value = "email") final String email,
+                                 final HttpServletRequest request) {
     final ModelAndView mav = new ModelAndView("/contact");
 
     try {
@@ -59,8 +76,14 @@ public class UserController {
     return getContactInfo(request, mav);
   }
 
+  /**
+   * Profile model and view.
+   *
+   * @param request the request
+   * @return the model and view
+   */
   @GetMapping("/profile")
-  public ModelAndView profile(HttpServletRequest request) {
+  public ModelAndView profile(final HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("/profile");
 
     int page = Constante.PAGE_NUMBER;
@@ -84,22 +107,21 @@ public class UserController {
   }
 
 
-  @GetMapping
-  public List<User> getAll() {
-    return userService.findAll();
-  }
-
+  /**
+   * Gets contact.
+   *
+   * @param request the request
+   * @return the contact
+   */
   @GetMapping("/contact")
-  public ModelAndView getContact(HttpServletRequest request) {
+  public ModelAndView getContact(final HttpServletRequest request) {
     ModelAndView mav = new ModelAndView("/contact");
     return getContactInfo(request, mav);
 
-//    mav.addObject("userDoesNotExist", this.appPropertiesExt.getError().getUserDoesNotExist());
-//    mav.addObject("alreadyInFriendList", this.appPropertiesExt.getError().getAlreadyInFriendList());
 
   }
 
-  private ModelAndView getContactInfo(HttpServletRequest request, ModelAndView mav) {
+  private ModelAndView getContactInfo(final HttpServletRequest request, final ModelAndView mav) {
 
     int page = Constante.PAGE_NUMBER;
     int size = Constante.PAGE_SIZE;

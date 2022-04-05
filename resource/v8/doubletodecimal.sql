@@ -9,19 +9,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema mydbtest
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema mydbtest
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `mydbtest` DEFAULT CHARACTER SET utf8 ;
+USE `mydbtest` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`enterprise`
+-- Table `mydbtest`.`enterprise`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`enterprise` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`enterprise` (
   `id_enterprise` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(55) NOT NULL,
   `siret` VARCHAR(45) NOT NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`user`
+-- Table `mydbtest`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`user` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -46,9 +46,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`account`
+-- Table `mydbtest`.`account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`account` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`account` (
   `id_account` INT NOT NULL AUTO_INCREMENT,
   `iban` INT NOT NULL,
   `bic` VARCHAR(45) NOT NULL,
@@ -62,17 +62,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`account` (
   INDEX `fk_account_enterprise1_idx` (`id_enterprise` ASC),
   CONSTRAINT `fk_account_enterprise1`
     FOREIGN KEY (`id_enterprise`)
-    REFERENCES `mydb`.`enterprise` (`id_enterprise`),
+    REFERENCES `mydbtest`.`enterprise` (`id_enterprise`),
   CONSTRAINT `fk_account_user1`
     FOREIGN KEY (`id_user`)
-    REFERENCES `mydb`.`user` (`id_user`))
+    REFERENCES `mydbtest`.`user` (`id_user`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`transaction`
+-- Table `mydbtest`.`transaction`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`transaction` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`transaction` (
   `id_transaction` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NOT NULL,
   `amount` DECIMAL(10,2) NULL DEFAULT NULL,
@@ -84,17 +84,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`transaction` (
   INDEX `fk_transaction_user1_idx` (`id_receiver` ASC),
   CONSTRAINT `fk_transaction_user1`
     FOREIGN KEY (`id_receiver`)
-    REFERENCES `mydb`.`user` (`id_user`),
+    REFERENCES `mydbtest`.`user` (`id_user`),
   CONSTRAINT `fk_transaction_user2`
     FOREIGN KEY (`id_emitter`)
-    REFERENCES `mydb`.`user` (`id_user`))
+    REFERENCES `mydbtest`.`user` (`id_user`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`commission`
+-- Table `mydbtest`.`commission`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`commission` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`commission` (
   `id_commission` INT NOT NULL AUTO_INCREMENT,
   `pourcentage` DOUBLE NOT NULL,
   `id_enterprise` INT NOT NULL,
@@ -106,17 +106,17 @@ CREATE TABLE IF NOT EXISTS `mydb`.`commission` (
   INDEX `fk_commission_transaction1_idx` (`id_transaction` ASC),
   CONSTRAINT `fk_commission_entreprise1`
     FOREIGN KEY (`id_enterprise`)
-    REFERENCES `mydb`.`enterprise` (`id_enterprise`),
+    REFERENCES `mydbtest`.`enterprise` (`id_enterprise`),
   CONSTRAINT `fk_commission_transaction1`
     FOREIGN KEY (`id_transaction`)
-    REFERENCES `mydb`.`transaction` (`id_transaction`))
+    REFERENCES `mydbtest`.`transaction` (`id_transaction`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`role`
+-- Table `mydbtest`.`role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`role` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`role` (
   `id_role` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NULL DEFAULT NULL,
   `role` VARCHAR(255) NULL DEFAULT NULL,
@@ -125,9 +125,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`user_has_user`
+-- Table `mydbtest`.`user_has_user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user_has_user` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`user_has_user` (
   `id_user` INT NOT NULL,
   `id_friend` INT NOT NULL,
   PRIMARY KEY (`id_user`, `id_friend`),
@@ -135,29 +135,49 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user_has_user` (
   INDEX `fk_user_has_user_user_idx` (`id_user` ASC),
   CONSTRAINT `fk_user_has_user_user`
     FOREIGN KEY (`id_user`)
-    REFERENCES `mydb`.`user` (`id_user`),
+    REFERENCES `mydbtest`.`user` (`id_user`),
   CONSTRAINT `fk_user_has_user_user1`
     FOREIGN KEY (`id_friend`)
-    REFERENCES `mydb`.`user` (`id_user`))
+    REFERENCES `mydbtest`.`user` (`id_user`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`user_role`
+-- Table `mydbtest`.`user_role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`user_role` (
+CREATE TABLE IF NOT EXISTS `mydbtest`.`user_role` (
   `id_user` INT NOT NULL,
   `id_role` INT NOT NULL,
   INDEX `FK2aam9nt2tv8vcfymi3jo9c314` (`id_role` ASC),
   INDEX `FKfhxaael2m459kbk8lv8smr5iv` (`id_user` ASC),
   CONSTRAINT `FK2aam9nt2tv8vcfymi3jo9c314`
     FOREIGN KEY (`id_role`)
-    REFERENCES `mydb`.`role` (`id_role`),
+    REFERENCES `mydbtest`.`role` (`id_role`),
   CONSTRAINT `FKfhxaael2m459kbk8lv8smr5iv`
     FOREIGN KEY (`id_user`)
-    REFERENCES `mydb`.`user` (`id_user`))
+    REFERENCES `mydbtest`.`user` (`id_user`))
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+insert into mydbtest.enterprise
+(`name`, `siret`) values
+('PayMyBuddy', 'FAKESIRET');
+
+insert into mydbtest.account
+(`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
+(1, 34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, NULL,1);
+insert into mydbtest.account
+(`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
+(2, 34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, 1,NULL);
+insert into mydbtest.account
+(`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
+(3, 34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, 2,NULL);
+insert into mydbtest.role (`role`) values ('ROLE_USER'), ('ROLE_ADMIN');
+insert into mydbtest.user (`id_user`,`username`, `password`, `email`, `account`) values (1,'test', 'testtest', 'email@teste.com', 500);
+insert into mydbtest.user (`id_user`,`username`, `password`, `email`, `account`) values (2,'test2', 'testtest2', 'email2@teste.com', 500);
+
+insert into mydbtest.transaction
+(`description`, `amount`, `id_emitter`, `id_receiver`) values ('description', 10, 1, 2);

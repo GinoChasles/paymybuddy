@@ -15,12 +15,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
 
+  /**
+   * Instantiates a new User service.
+   *
+   * @param userRepositoryParam the user repository param
+   * @param roleRepositoryParam the role repository param
+   */
   public UserServiceImpl(final UserRepository userRepositoryParam,
                          final RoleRepository roleRepositoryParam) {
     userRepository = userRepositoryParam;

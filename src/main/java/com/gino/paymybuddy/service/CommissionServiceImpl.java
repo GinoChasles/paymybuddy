@@ -5,11 +5,19 @@ import com.gino.paymybuddy.repository.CommissionRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Commission service.
+ */
 @Service
 public class CommissionServiceImpl implements CommissionService{
 
   private final CommissionRepository commissionRepository;
 
+  /**
+   * Instantiates a new Commission service.
+   *
+   * @param commissionRepositoryParam the commission repository param
+   */
   public CommissionServiceImpl(
       final CommissionRepository commissionRepositoryParam) {
     commissionRepository = commissionRepositoryParam;

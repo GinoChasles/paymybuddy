@@ -15,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Transaction service.
+ */
 @Service
 public class TransactionServiceImpl implements TransactionService{
 
@@ -24,6 +27,15 @@ public class TransactionServiceImpl implements TransactionService{
   private final CommissionService commissionService;
   private final BankAccountService bankAccountService;
 
+  /**
+   * Instantiates a new Transaction service.
+   *
+   * @param transactionRepositoryParam the transaction repository param
+   * @param userServiceParam           the user service param
+   * @param enterpriseServiceParam     the enterprise service param
+   * @param commissionServiceParam     the commission service param
+   * @param bankAccountServiceParam    the bank account service param
+   */
   public TransactionServiceImpl(
       final TransactionRepository transactionRepositoryParam,
       final UserService userServiceParam,

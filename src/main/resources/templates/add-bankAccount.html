@@ -7,18 +7,19 @@
 <body>
 <div class="container my-4">
 <div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
-<form method="post" th:action="@{/bankAccount}" th:object="${addBank}" modelAttribute = "bancAccount">
+<form method="post" th:action="@{/bankAccount}" th:object="${addBank}" >
+<!--    modelAttribute="bankAccount"-->
         <label for="iban">IBAN du compte</label>
-        <input type="number" id="iban" name="name" max="99999" th:field="*{iban}">
+        <input type="number" id="iban" max="99999" th:field="*{iban}">
 
         <label for="bic">BIC</label>
-        <input type="text" id="bic" name="name" placeholder="Bic of the bank account"
+        <input type="text" id="bic" placeholder="Bic of the bank account"
                required th:field="*{bic}">
         <label for="accountnumber">Numéro du compte</label>
-        <input type="text" id="accountnumber" name="name"
+        <input type="text" id="accountnumber"
                placeholder="Number of the bank account" required th:field="*{accountnumber}">
         <label for="amount">Solde</label>
-        <input type="number" id="amount" name="number"  required th:field="*{amount}">
+        <input type="number" id="amount"   required th:field="*{amount}">
     <button type="submit" class="btn btn-primary">Add</button>
 </form>
 </div>

@@ -1,7 +1,15 @@
 package com.gino.paymybuddy.exceptions;
 
-public class UserDoesNotExist extends RuntimeException{
-  public UserDoesNotExist(String s) {
+/**
+ * The type User does not exist.
+ */
+public class UserDoesNotExist extends RuntimeException {
+  /**
+   * Instantiates a new User does not exist.
+   *
+   * @param s the s
+   */
+  public UserDoesNotExist(final String s) {
     super(s);
   }
 }

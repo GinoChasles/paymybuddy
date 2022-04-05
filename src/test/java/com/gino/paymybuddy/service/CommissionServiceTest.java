@@ -21,6 +21,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Commission service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class CommissionServiceTest {
 
@@ -30,10 +33,13 @@ public class CommissionServiceTest {
   @Mock
   private CommissionRepository commissionRepository;
 
-  private static Commission commission1;
-  private static Commission commission2;
-  private static List<Commission> commissionList;
+  private Commission commission1;
+  private Commission commission2;
+  private List<Commission> commissionList;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     commission1 = new Commission(0.5, 0.5);
@@ -43,6 +49,9 @@ public class CommissionServiceTest {
     commissionList.add(commission2);
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(commissionRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(commission1));
@@ -57,6 +66,9 @@ public class CommissionServiceTest {
     Mockito.verify(commissionRepository, Mockito.times(1)).findById(Mockito.anyInt());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(commissionRepository.save(Mockito.any(Commission.class))).thenReturn(commission1);
@@ -67,6 +79,9 @@ public class CommissionServiceTest {
     assertThat(commissionLocal.getPourcentage()).isEqualTo(0.5);
   }
 
+  /**
+   * Delete test.
+   */
   @Test
   public void deleteTest() {
     ArgumentCaptor<Commission> argumentCaptor = ArgumentCaptor.forClass(Commission.class);
@@ -78,6 +93,9 @@ public class CommissionServiceTest {
 
   }
 
+  /**
+   * Update test not present.
+   */
   @Test
   public void updateTest_NotPresent() {
     when(commissionRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -85,6 +103,9 @@ public class CommissionServiceTest {
       assertThat(commissionLocal).isNull();
   }
 
+  /**
+   * Update test.
+   */
   @Test
   public void updateTest() {
     when(commissionRepository.findById(commission1.getIdCommission())).thenReturn(Optional.of(commission1));
@@ -95,6 +116,10 @@ public class CommissionServiceTest {
       assertThat(commission1.getPourcentage()).isEqualTo(1);
 
   }
+
+  /**
+   * Gets total commission for enterprise test.
+   */
   @Test
   public void getTotalCommissionForEnterpriseTest() {
     double expected = commission1.getCommisssionCount() + commission2.getCommisssionCount();

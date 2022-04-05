@@ -28,6 +28,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Transaction service test.
+ */
 @ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
 
@@ -45,21 +48,24 @@ public class TransactionServiceTest {
   @Mock
   private BankAccountService bankAccountService;
 
-  private static Transaction transaction1Emit;
-  private static Transaction transaction2Emit;
-  private static Transaction transaction1Receiver;
-  private static Transaction transaction2Receiver;
-  private static List<Transaction> transactionListEmitter = new ArrayList<>();
-  private static List<Transaction> transactionListReceiver = new ArrayList<>();
-  private static List<Transaction> transactionList = new ArrayList<>();
-  private static TransactionDTO transactionDTOEmit1;
-  private static TransactionDTO transactionDTOEmit2;
-  private static User user1;
-  private static User user2;
-  private static Enterprise enterprise;
-  private static Commission commission;
-  private static Account account;
+  private Transaction transaction1Emit;
+  private Transaction transaction2Emit;
+  private Transaction transaction1Receiver;
+  private Transaction transaction2Receiver;
+  private List<Transaction> transactionListEmitter = new ArrayList<>();
+  private List<Transaction> transactionListReceiver = new ArrayList<>();
+  private List<Transaction> transactionList = new ArrayList<>();
+  private TransactionDTO transactionDTOEmit1;
+  private TransactionDTO transactionDTOEmit2;
+  private User user1;
+  private User user2;
+  private Enterprise enterprise;
+  private Commission commission;
+  private Account account;
 
+  /**
+   * Sets up.
+   */
   @BeforeEach
   void setUp() {
     user1 = new User(1,"username1", "password", "username1@gmail.com", 50);
@@ -84,6 +90,9 @@ public class TransactionServiceTest {
     transactionList.addAll(transactionListEmitter);
   }
 
+  /**
+   * Find by id test.
+   */
   @Test
   public void findByIdTest() {
     when(transactionRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(transaction1Emit));
@@ -98,6 +107,9 @@ public class TransactionServiceTest {
     Mockito.verify(transactionRepository, Mockito.times(1)).findById(Mockito.anyInt());
   }
 
+  /**
+   * Insert test.
+   */
   @Test
   public void insertTest() {
     when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(transaction1Emit);
@@ -107,6 +119,9 @@ public class TransactionServiceTest {
     assertThat(transactionLocal.getDescription()).isEqualTo("descriptionEmit1");
   }
 
+  /**
+   * Find all by emitter id test.
+   */
   @Test
   public void findAllByEmitterIdTest() {
     Pageable paging = PageRequest.of(0, 2);
@@ -118,6 +133,9 @@ public class TransactionServiceTest {
     assertThat(transactionPageLocal.get().findFirst().get().getDescription()).isEqualTo("descriptionEmit1");
   }
 
+  /**
+   * Find all by receiver id test.
+   */
   @Test
   public void findAllByReceiverIdTest() {
     Pageable paging = PageRequest.of(0, 2);
@@ -129,6 +147,9 @@ public class TransactionServiceTest {
     assertThat(transactionPageLocal.get().findFirst().get().getDescription()).isEqualTo("descriptionReceiver1");
   }
 
+  /**
+   * Find all test.
+   */
   @Test
   public void findAllTest() {
     when(transactionRepository.findAll()).thenReturn(transactionList);
@@ -138,6 +159,9 @@ public class TransactionServiceTest {
     assertThat(transactionListLocal.size()).isEqualTo(transactionList.size());
   }
 
+  /**
+   * Create transaction test.
+   */
   @Test
   public void createTransactionTest() {
     when(userService.findUserByEmail(anyString())).thenReturn(Optional.of(user1));
@@ -170,6 +194,9 @@ public class TransactionServiceTest {
   assertThat(test.getAmount()).isEqualTo(transaction1Emit.getAmount());
   }
 
+  /**
+   * Create transaction test when missing two user.
+   */
   @Test
   public void createTransactionTest_whenMissingTwoUser() {
     when(userService.findUserByEmail(anyString())).thenReturn(Optional.empty());
@@ -179,6 +206,10 @@ public class TransactionServiceTest {
 
     assertThat(test).isNull();
   }
+
+  /**
+   * Create transaction test when missing one user.
+   */
   @Test
   public void createTransactionTest_whenMissingOneUser() {
     when(userService.findUserByEmail(anyString())).thenReturn(Optional.empty());
@@ -188,6 +219,10 @@ public class TransactionServiceTest {
 
     assertThat(test).isNull();
   }
+
+  /**
+   * Create transaction test when missing emitter user.
+   */
   @Test
   public void createTransactionTest_whenMissingEmitterUser() {
     when(userService.findUserByEmail(anyString())).thenReturn(Optional.of(user1));
