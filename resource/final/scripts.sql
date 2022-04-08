@@ -175,3 +175,13 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+insert into mydb.enterprise
+(`id_enterprise`,`name`, `siret`) values
+    (1, 'PayMyBuddy', 'FAKESIRET');
+insert into mydb.role (`id_role`,`role`) values (1,'ROLE_USER'), (2,'ROLE_ADMIN');
+insert into mydb.account
+(`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
+    (1, 34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, NULL,1);
