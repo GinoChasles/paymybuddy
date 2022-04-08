@@ -2,7 +2,7 @@
 -- Tue Apr  5 11:11:43 2022
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
-
+DROP SCHEMA IF EXISTS mydb;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -182,6 +182,15 @@ insert into mydb.enterprise
 (`id_enterprise`,`name`, `siret`) values
     (1, 'PayMyBuddy', 'FAKESIRET');
 insert into mydb.role (`id_role`,`role`) values (1,'ROLE_USER'), (2,'ROLE_ADMIN');
+
 insert into mydb.account
 (`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) values
-    (1, 34,'TESTBIC', 'ABCDEFGHIJ', 1000.00, NULL,1);
+    (1, 34,'TESTBIC', 'ABCDEFGHIJ', 1005.05, NULL,1);
+INSERT INTO `user` VALUES (1,'user1','$2a$10$zqfnNY7THtd1v38FrLChHee4gLSGv7GGvs4NkJkbVwj5Ti.7mmC2W','user1@gmail.com',9955.00),(2,'user2','$2a$10$A.TGz/qmwXBc9AOV.41i8OI8WdijaOfq2ClOPoHq8.EgYb/ZgrWV6','user2@gmail.com',999.95);
+INSERT INTO `user_role` VALUES (1,1),(2,1);
+INSERT INTO `user_has_user` VALUES (2,1),(1,2);
+
+INSERT INTO mydb.account
+(`id_account`,`iban`, `bic`, `accountnumber`, `amount`, `id_user`, `id_enterprise`) VALUES (2,12345,'BICUSER1','USER1ACCOUNT1',89050.00,1,NULL),(3,54321,'BICUSER2','USER2ACCOUNT1',490.00,2,NULL);
+INSERT INTO `transaction` VALUES (1,'User1toUser2',1000.00,1,2),(2,'User2toUser1',10.00,2,1);
+INSERT INTO `commission` VALUES (1,0.5,1,1,5.00),(2,0.5,1,2,0.05);
