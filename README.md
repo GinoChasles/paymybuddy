@@ -15,8 +15,10 @@ P6 openclassrooms's project
 
 
 ##Diagramme de classe
-![Alt text](resource/final/P6.png?raw=true "Title")
+
+![Alt text](resource/final/P6.png?raw=true)
 
 
 
 ##Modèle physique de données
+![Alt text](resource/final/eer.png?raw=true)
