@@ -2,7 +2,7 @@
 P6 openclassrooms's project
 
 
-##User's story:
+#User's story:
  
 - En tant que non inscris je dois pouvoir m'inscrire sur le site avec une adresse mail ou avec un compte de réseaux sociaux afin d'utiliser l'application.
 - En tant qu'user je dois pouvoir ajouter des amis par leur adresse mail afin d'effectuer des transactions.
@@ -14,11 +14,11 @@ P6 openclassrooms's project
 - En tant que Pay My Buddy, je veux prélever 0,5% sur chaque transaction afin de monétiser l'application.
 
 
-##Diagramme de classe
+#Diagramme de classe
 
 ![Alt text](resource/final/P6.png?raw=true)
 
 
 
-##Modèle physique de données
+#Modèle physique de données
 ![Alt text](resource/final/eer.png?raw=true)
