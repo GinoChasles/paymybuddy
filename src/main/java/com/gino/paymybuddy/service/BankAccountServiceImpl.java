@@ -71,7 +71,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
   @Override
   @Transactional
-  public void transferToUserAccount(final int idUser, final int idAccount, final double value) throws Exception{
+  public void transferToUserAccount(final int idUser, final int idAccount, final double value) throws Exception {
     User userLocal = userService.findById(idUser).get();
     Account accountLocal = bankAccountRepository.findById(idAccount).get();
     double amount = accountLocal.getAmount();
